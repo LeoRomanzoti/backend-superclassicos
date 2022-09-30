@@ -1,5 +1,7 @@
+import ChosenPlayer from "../../domain/entity/ChosenPlayer";
 import CorneteiroTeam from "../../domain/entity/CorneteiroTeam";
 import Player from "../../domain/entity/Player";
+import Round from "../../domain/entity/Round";
 import CorneteiroTeamRepository from "../../domain/repository/CorneteiroTeamRepository";
 
 export default class CorneteiroTeamRepositoryMemory
@@ -8,21 +10,39 @@ export default class CorneteiroTeamRepositoryMemory
     corneteirosTeam: Array<CorneteiroTeam>;
 
     constructor() {
+        const round = new Round("1", "2022-10-22", "2022-10-29", 1);
+
         this.corneteirosTeam = [
             new CorneteiroTeam("1", []),
             new CorneteiroTeam("2", [
-                new Player("1", "Pedro", "Lateral"),
-                new Player("1", "Leo", "Atacante"),
+                new ChosenPlayer(
+                    "1",
+                    new Player("1", "Pedro", "Lateral"),
+                    round,
+                    0
+                ),
+                new ChosenPlayer(
+                    "2",
+                    new Player("1", "Leo", "Atacante"),
+                    round,
+                    4
+                ),
             ]),
-            new CorneteiroTeam("3", [new Player("1", "Jose", "Lateral")]),
+            new CorneteiroTeam("3", [
+                new ChosenPlayer(
+                    "3",
+                    new Player("1", "Pedro", "Lateral"),
+                    round,
+                    3
+                ),
+            ]),
         ];
     }
 
     getById(corneteiroTeamId: string): CorneteiroTeam | undefined {
-        const corneteiroTeam = this.corneteirosTeam.filter(
+        const corneteiroTeam = this.corneteirosTeam.find(
             (ct) => ct.corneteiroTeamId === corneteiroTeamId
         );
-        if (corneteiroTeam.length === 0) return;
-        return corneteiroTeam[0];
+        return corneteiroTeam;
     }
 }

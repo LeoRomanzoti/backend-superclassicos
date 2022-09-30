@@ -10,9 +10,9 @@ export default class PlayerRepositoryMemory implements PlayerRepository {
             new Player("2", "Leo", "Atacante"),
         ];
     }
+
     getById(playerId: string): Player | undefined {
-        const player = this.players.filter((p) => p.playerId === playerId);
-        if (player.length === 0) return;
-        return player[0];
+        const player = this.players.find((p) => p.playerId === playerId);
+        return player;
     }
 }

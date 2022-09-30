@@ -1,22 +1,20 @@
+import ChosenPlayer from "../entity/ChosenPlayer";
 import CorneteiroTeam from "../entity/CorneteiroTeam";
+import ChosenPlayerRepository from "../repository/ChosenPlayerRespository";
 import CorneteiroTeamRepository from "../repository/CorneteiroTeamRepository";
-import PlayerRepository from "../repository/PlayerRepository";
 
 export default class AddPlayer {
     constructor(
         readonly corneteiroTeamRepository: CorneteiroTeamRepository,
-        readonly playerRepository: PlayerRepository
+        readonly chosenPlayerRepository: ChosenPlayerRepository
     ) {}
 
-    execute(
-        playerId: string,
-        corneteiroTeamId: string
-    ): CorneteiroTeam | undefined {
+    execute(chosenPlayerId: string, corneteiroTeamId: string): void {
         const team = this.corneteiroTeamRepository.getById(corneteiroTeamId);
         if (!team) return;
-        const player = this.playerRepository.getById(playerId);
-        if (!player) return;
-        team.addPlayer(player);
-        return team;
+        const chosenPlayer =
+            this.chosenPlayerRepository.getById(chosenPlayerId);
+        if (!chosenPlayer) return;
+        team.addPlayer(chosenPlayer);
     }
 }
