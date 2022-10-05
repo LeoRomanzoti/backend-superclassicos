@@ -3,17 +3,24 @@ import CorneteiroTeam from "../entity/CorneteiroTeam";
 import ChosenPlayerRepository from "../repository/ChosenPlayerRespository";
 import CorneteiroTeamRepository from "../repository/CorneteiroTeamRepository";
 
-export default class AddPlayer {
+export default class AddChosenPlayer {
     constructor(
         readonly corneteiroTeamRepository: CorneteiroTeamRepository,
         readonly chosenPlayerRepository: ChosenPlayerRepository
     ) {}
 
-    execute(chosenPlayerId: string, corneteiroTeamId: string): void {
-        const team = this.corneteiroTeamRepository.getById(corneteiroTeamId);
+    async execute(
+        chosenPlayerId: string,
+        corneteiroTeamId: string
+    ): Promise<void> {
+        const team = await this.corneteiroTeamRepository.getById(
+            corneteiroTeamId
+        );
+        console.log(team);
         if (!team) return;
-        const chosenPlayer =
-            this.chosenPlayerRepository.getById(chosenPlayerId);
+        const chosenPlayer = await this.chosenPlayerRepository.getById(
+            chosenPlayerId
+        );
         if (!chosenPlayer) return;
         team.addPlayer(chosenPlayer);
     }

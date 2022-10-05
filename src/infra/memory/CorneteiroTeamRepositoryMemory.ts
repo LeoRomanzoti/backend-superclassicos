@@ -39,7 +39,9 @@ export default class CorneteiroTeamRepositoryMemory
         ];
     }
 
-    getById(corneteiroTeamId: string): CorneteiroTeam | undefined {
+    async getById(
+        corneteiroTeamId: string
+    ): Promise<CorneteiroTeam | undefined> {
         const corneteiroTeam = this.corneteirosTeam.find(
             (ct) => ct.corneteiroTeamId === corneteiroTeamId
         );

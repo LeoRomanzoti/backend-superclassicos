@@ -1,5 +1,4 @@
 import CreateChosenPlayer from "../../src/domain/usecase/CreateChosenPlayer";
-import ChosenPlayerRepositoryMemory from "../../src/infra/memory/ChosenPlayerRespositoryMemory";
 import PlayerRepositoryMemory from "../../src/infra/memory/PlayerRepositoryMemory";
 import RoundRepositoryMemory from "../../src/infra/memory/RoundRepositoryMemory";
 
@@ -8,10 +7,10 @@ test("should create a chosen player", () => {
         player_id: "2",
         round_id: "1",
     };
-    const playerlayerRepository = new PlayerRepositoryMemory();
+    const playerRepository = new PlayerRepositoryMemory();
     const roundRepository = new RoundRepositoryMemory();
     const createChosenPlayerUseCase = new CreateChosenPlayer(
-        playerlayerRepository,
+        playerRepository,
         roundRepository
     );
     const chosenPlayer = createChosenPlayerUseCase.execute(

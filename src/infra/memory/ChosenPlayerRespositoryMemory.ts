@@ -19,11 +19,11 @@ export default class ChosenPlayerRepositoryMemory
         ];
     }
 
-    getById(chosenPlayerId: string): ChosenPlayer | undefined {
-        const chosenPlayers = this.chosenPlayers.find(
+    async getById(chosenPlayerId: string): Promise<ChosenPlayer | undefined> {
+        const chosenPlayer = this.chosenPlayers.find(
             (cp) => cp.chosenPlayerId === chosenPlayerId
         );
-        return chosenPlayers;
+        return chosenPlayer;
     }
 
     getAll(): ChosenPlayer[] {
