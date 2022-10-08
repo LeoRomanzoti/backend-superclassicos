@@ -1,4 +1,3 @@
-import CorneteiroTeamDetail from "../../src/domain/usecase/CorneteiroTeamDetail";
 import RemoveChosenPlayer from "../../src/domain/usecase/RemoveChosenPlayer";
 import CorneteiroTeamRepositoryMemory from "../../src/infra/memory/CorneteiroTeamRepositoryMemory";
 

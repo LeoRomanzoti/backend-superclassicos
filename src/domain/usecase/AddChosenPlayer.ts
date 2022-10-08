@@ -16,7 +16,6 @@ export default class AddChosenPlayer {
         const team = await this.corneteiroTeamRepository.getById(
             corneteiroTeamId
         );
-        console.log(team);
         if (!team) return;
         const chosenPlayer = await this.chosenPlayerRepository.getById(
             chosenPlayerId

@@ -1,8 +1,18 @@
+import cors from "cors";
 import express from "express";
-import main from "./../src/infra/database/prisma";
+import Routes from "./Routes";
 
 const app = express();
+app.use(cors());
+app.use(express.json());
+const port = 3000;
 
-app.get("/teams/", (req: any, res: any) => {});
+new Routes(app);
 
-app.listen(3000);
+app.post("/", (req, res) => {
+    res.json({ message: "hello world!" });
+});
+
+app.listen(port, () => {
+    console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
+});

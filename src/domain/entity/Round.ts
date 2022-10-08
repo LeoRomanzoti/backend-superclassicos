@@ -4,5 +4,5 @@ export default class Round {
         readonly startDate: string,
         readonly endDate: string,
         readonly number: number
-    ) {}
+    ) { }
 }

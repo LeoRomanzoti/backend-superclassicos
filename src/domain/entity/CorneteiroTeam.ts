@@ -1,18 +1,19 @@
 import ChosenPlayer from "./ChosenPlayer";
 
 export default class CorneteiroTeam {
-    players: Array<ChosenPlayer>;
     score: number;
+    players: ChosenPlayer[];
 
-    TOTAL_PLAYER = 11;
-    MAX_PLAYER_PER_POSITION = 2;
+    private TOTAL_PLAYER = 11;
+    private MAX_PLAYER_PER_POSITION = 2;
 
     constructor(
+        readonly name: string,
         readonly corneteiroTeamId: string,
-        players: Array<ChosenPlayer>
+        players: ChosenPlayer[],
     ) {
+        this.score = this.countScore(players);
         this.players = players;
-        this.score = 0;
     }
 
     addPlayer(chosenPlayer: ChosenPlayer) {
@@ -35,5 +36,13 @@ export default class CorneteiroTeam {
         if (quantityPlayersFromPositiion.length >= this.MAX_PLAYER_PER_POSITION)
             return false;
         return true;
+    }
+
+    countScore(players: any): number {
+        let score = 0
+        for (const player of players) {
+            score += player?.chosenPlayer?.score
+        }
+        return score
     }
 }

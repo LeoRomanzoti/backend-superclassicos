@@ -3,5 +3,5 @@ export default class Player {
         readonly playerId: string,
         readonly name: string,
         readonly position: string
-    ) {}
+    ) { }
 }
