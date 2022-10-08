@@ -1,0 +1,14 @@
+import CreateUser from "../../src/domain/usecase/CreateUser"
+import UserRepositoryMemory from "../../src/infra/memory/UserRepositoryMemory"
+
+test('should create a new user', async () => {
+    const input = {
+        phone: "19998305135"
+    }
+
+    const useRepository = new UserRepositoryMemory()
+    const createUserUseCase = new CreateUser(useRepository)
+    const newUser = await createUserUseCase.execute(input.phone)
+
+    expect(newUser.phone).toBe("19998305135")
+})

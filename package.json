@@ -7,14 +7,16 @@
         "test": "test"
     },
     "scripts": {
-        "dev": "nodemon src/main.ts",
+        "dev": "tsc && nodemon dist/src/main",
         "test": "tsc && jest ./dist",
         "coverage": "jest --coverage",
         "lint": "eslint src",
         "lint-fix": "eslint src --fix",
         "prepare": "husky install",
         "main": "tsc && node ./dist/src/main",
-        "migrate": "npx prisma migrate dev --name init"
+        "migrate": "npx prisma migrate dev --name init",
+        "prisma": "npx prisma studio",
+        "build": "tsc"
     },
     "keywords": [],
     "author": "",
@@ -22,8 +24,11 @@
     "devDependencies": {
         "@babel/plugin-transform-modules-commonjs": "^7.18.6",
         "@babel/preset-typescript": "^7.18.6",
+        "@types/cors": "^2.8.12",
         "@types/express": "^4.17.14",
         "@types/jest": "^28.1.8",
+        "@typescript-eslint/eslint-plugin": "^5.39.0",
+        "concurrently": "^7.4.0",
         "eslint": "^8.19.0",
         "eslint-config-airbnb-base": "^15.0.0",
         "eslint-config-prettier": "^8.5.0",
@@ -35,13 +40,16 @@
         "eslint-plugin-promise": "^6.0.0",
         "husky": "^8.0.0",
         "jest": "^28.1.2",
-        "nodemon": "^2.0.19",
+        "nodemon": "^2.0.20",
         "prisma": "^4.4.0"
     },
     "dependencies": {
         "@prisma/client": "^4.4.0",
         "cors": "^2.8.5",
         "express": "^4.18.1",
-        "typescript": "^4.8.4"
+        "prettier": "^2.7.1",
+        "ts-node": "^10.9.1",
+        "typescript": "^4.8.4",
+        "typescript-eslint": "0.0.1-alpha.0"
     }
 }

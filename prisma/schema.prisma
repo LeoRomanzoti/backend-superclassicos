@@ -1,52 +1,73 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:./dev.db"
 }
 
 model User {
-  id    String     @id @default(uuid())
+  id    String  @id @default(uuid())
   phone String  @unique
   name  String?
-  team Team?
+  team  Team?
 }
 
 model Player {
-    id    String     @id @default(uuid())
-    name String
-    position String
-    chosenPlayer ChosenPlayer[]
+  id           String         @id @default(uuid())
+  name         String
+  position     String
+  chosenPlayer ChosenPlayer[]
 }
 
 model Round {
-    id String @id @default(uuid())
-    start_date String
-    end_data String
-    number Int
-    chosenPlayer ChosenPlayer[]
+  id           String         @id @default(uuid())
+  start_date   String
+  end_data     String
+  number       Int
+  chosenPlayer ChosenPlayer[]
 }
 
 model ChosenPlayer {
-    id String @id @default(uuid())
-    player Player @relation(fields: [playerId], references: [id])
-    playerId String
-    round Round @relation(fields: [roundId], references: [id])
-    roundId String
-    team Team @relation(fields: [teamId], references: [id])
-    teamId String
-    score Int
+  id                    String                  @id @default(uuid())
+  playerId              String
+  roundId               String
+  score                 Int
+  round                 Round                   @relation(fields: [roundId], references: [id])
+  player                Player                  @relation(fields: [playerId], references: [id])
+  teamsOnPlayers        TeamsOnPlayers[]
+  chosenPlayersOnPoints ChosenPlayersOnPoints[]
 }
 
 model Team {
-  id        String     @id @default(uuid())
-  name     String
-  user      User @relation(fields: [userId], references: [id])
-  userId    String @unique
-  players   ChosenPlayer[]
+  id             String           @id @default(uuid())
+  name           String
+  userId         String           @unique
+  user           User             @relation(fields: [userId], references: [id])
+  teamsOnPlayers TeamsOnPlayers[]
+}
+
+model TeamsOnPlayers {
+  id             String       @id @default(uuid())
+  chosenPlayerId String
+  teamId         String
+  teams          Team         @relation(fields: [teamId], references: [id])
+  chosenPlayer   ChosenPlayer @relation(fields: [chosenPlayerId], references: [id])
+}
+
+model Points {
+  id                    String                  @id @default(uuid())
+  value                 Float
+  label                 String
+  code                  String
+  chosenPlayersOnPoints ChosenPlayersOnPoints[]
+}
+
+model ChosenPlayersOnPoints {
+  id             String        @id @default(uuid())
+  chosenPlayerId String?
+  ChosenPlayer   ChosenPlayer? @relation(fields: [chosenPlayerId], references: [id])
+  point          Points        @relation(fields: [pointId], references: [id])
+  pointId        String
 }

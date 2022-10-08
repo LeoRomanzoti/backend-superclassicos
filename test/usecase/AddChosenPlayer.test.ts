@@ -26,6 +26,10 @@ test("should add a chosen player at corneteiro team", async () => {
     );
     addPlayerUseCase.execute(input.chosen_player_id, input.corneteiro_team_id);
 
+    corneteiroTeamDetail = await corneteiroTeamDetailUseCase.execute(
+        input.corneteiro_team_id
+    );
+
     expect(corneteiroTeamDetail?.players.length).toBe(1);
     expect(corneteiroTeamDetail?.players[0].player.name).toBe("Pedro");
 });

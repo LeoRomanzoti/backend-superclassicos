@@ -10,7 +10,6 @@ export default class CreateChosenPlayer {
 
     execute(playerId: string, roundId: string): ChosenPlayer | undefined {
         const player = this.playerRepository.getById(playerId);
-        console.log({ player });
         if (!player) return;
         const round = this.roundRepository.getById(roundId);
         if (!round) return;

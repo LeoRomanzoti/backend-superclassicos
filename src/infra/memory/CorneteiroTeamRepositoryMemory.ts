@@ -5,16 +5,15 @@ import Round from "../../domain/entity/Round";
 import CorneteiroTeamRepository from "../../domain/repository/CorneteiroTeamRepository";
 
 export default class CorneteiroTeamRepositoryMemory
-    implements CorneteiroTeamRepository
-{
+    implements CorneteiroTeamRepository {
     corneteirosTeam: Array<CorneteiroTeam>;
 
     constructor() {
         const round = new Round("1", "2022-10-22", "2022-10-29", 1);
 
         this.corneteirosTeam = [
-            new CorneteiroTeam("1", []),
-            new CorneteiroTeam("2", [
+            new CorneteiroTeam("Tabajara", "1", []),
+            new CorneteiroTeam("L7O", "2", [
                 new ChosenPlayer(
                     "1",
                     new Player("1", "Pedro", "Lateral"),
@@ -28,7 +27,7 @@ export default class CorneteiroTeamRepositoryMemory
                     4
                 ),
             ]),
-            new CorneteiroTeam("3", [
+            new CorneteiroTeam("Leme FC", "3", [
                 new ChosenPlayer(
                     "3",
                     new Player("1", "Pedro", "Lateral"),
@@ -37,6 +36,9 @@ export default class CorneteiroTeamRepositoryMemory
                 ),
             ]),
         ];
+    }
+    getAll(): Promise<CorneteiroTeam[] | undefined> {
+        throw new Error("Method not implemented.");
     }
 
     async getById(

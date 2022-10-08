@@ -1,13 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import ChosenPlayerAdapter from "../../adapter/ChosenPlayerAdapter";
 import ChosenPlayer from "../../domain/entity/ChosenPlayer";
-import Player from "../../domain/entity/Player";
-import Round from "../../domain/entity/Round";
 import ChosenPlayerRepository from "../../domain/repository/ChosenPlayerRespository";
 
 export default class ChosenPlayerRepositoryDatabase
-    implements ChosenPlayerRepository
-{
-    constructor(readonly databaseConnection: PrismaClient) {}
+    implements ChosenPlayerRepository {
+    constructor(readonly databaseConnection: PrismaClient, readonly chosenPlayerAdapter: ChosenPlayerAdapter) { }
 
     async getById(chosenPlayerId: string): Promise<ChosenPlayer | undefined> {
         const chosenPlayerData =
@@ -21,27 +19,26 @@ export default class ChosenPlayerRepositoryDatabase
                 },
             });
         if (!chosenPlayerData) return;
-        const player = new Player(
-            chosenPlayerData?.player.id,
-            chosenPlayerData?.player.name,
-            chosenPlayerData?.player.position
-        );
-        const round = new Round(
-            chosenPlayerData?.round.id,
-            chosenPlayerData?.round.start_date,
-            chosenPlayerData?.round.end_data,
-            chosenPlayerData?.round.number
-        );
-        const chosenPlayer = new ChosenPlayer(
-            chosenPlayerData?.id,
-            player,
-            round,
-            chosenPlayerData?.score
-        );
+        const chosenPlayer = this.chosenPlayerAdapter.parse(chosenPlayerData)
         return chosenPlayer;
     }
 
-    getAll(): ChosenPlayer[] {
-        throw new Error("Method not implemented.");
+    async getAll(): Promise<ChosenPlayer[] | undefined> {
+        let chosenPlayerList = []
+        const chosenPlayersData = await this.databaseConnection.chosenPlayer.findMany({
+            include: {
+                player: {
+                    select: {
+                        name: true,
+                        position: true
+                    }
+                },
+            }
+        })
+        for (const chosenPlayerData of chosenPlayersData) {
+            const chosenPlayer = this.chosenPlayerAdapter.parse(chosenPlayerData)
+            chosenPlayerList.push(chosenPlayer)
+        }
+        return chosenPlayerList
     }
 }

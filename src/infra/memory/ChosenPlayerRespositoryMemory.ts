@@ -4,8 +4,7 @@ import Round from "../../domain/entity/Round";
 import ChosenPlayerRepository from "../../domain/repository/ChosenPlayerRespository";
 
 export default class ChosenPlayerRepositoryMemory
-    implements ChosenPlayerRepository
-{
+    implements ChosenPlayerRepository {
     chosenPlayers: Array<ChosenPlayer>;
 
     constructor() {
@@ -26,7 +25,7 @@ export default class ChosenPlayerRepositoryMemory
         return chosenPlayer;
     }
 
-    getAll(): ChosenPlayer[] {
+    async getAll(): Promise<ChosenPlayer[] | undefined> {
         return this.chosenPlayers;
     }
 }
