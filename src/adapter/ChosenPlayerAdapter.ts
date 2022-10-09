@@ -3,7 +3,7 @@ import Player from "../domain/entity/Player";
 import Round from "../domain/entity/Round";
 
 export default class CorneteiroTeamAdapter {
-    constructor() { }
+    constructor() {}
 
     parse(chosenPlayerData: any) {
         const player = new Player(
@@ -23,6 +23,6 @@ export default class CorneteiroTeamAdapter {
             round,
             chosenPlayerData?.score
         );
-        return chosenPlayer
+        return chosenPlayer;
     }
 }

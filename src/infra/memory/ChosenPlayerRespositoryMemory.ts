@@ -4,7 +4,8 @@ import Round from "../../domain/entity/Round";
 import ChosenPlayerRepository from "../../domain/repository/ChosenPlayerRespository";
 
 export default class ChosenPlayerRepositoryMemory
-    implements ChosenPlayerRepository {
+    implements ChosenPlayerRepository
+{
     chosenPlayers: Array<ChosenPlayer>;
 
     constructor() {
@@ -12,7 +13,12 @@ export default class ChosenPlayerRepositoryMemory
             new ChosenPlayer(
                 "1",
                 new Player("1", "Pedro", "Lateral"),
-                new Round("1", "2022-10-22", "2022-10-29", 1),
+                new Round(
+                    "1",
+                    new Date("2022-10-22"),
+                    new Date("2022-10-29"),
+                    1
+                ),
                 0
             ),
         ];

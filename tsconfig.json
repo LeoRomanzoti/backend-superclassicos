@@ -95,5 +95,5 @@
     ],
     "exclude": [
         "node_modules"
-    ]
+    ],
 }

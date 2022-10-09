@@ -1,18 +1,25 @@
-import CorneteiroTeam from "../entity/CorneteiroTeam";
-import CorneteiroTeamRepository from "../repository/CorneteiroTeamRepository";
+import TeamsOnPlayersRepository from "../repository/TeamsOnPlayersRepository";
 
 export default class RemoveChosenPlayer {
-    constructor(readonly corneteiroTeamRepository: CorneteiroTeamRepository) {}
+    constructor(readonly teamsOnPlayerRepository: TeamsOnPlayersRepository) {}
 
-    async execute(
-        corneteiroTeamId: string,
-        chosenPlayerId: string
-    ): Promise<CorneteiroTeam | undefined> {
-        const team = await this.corneteiroTeamRepository.getById(
-            corneteiroTeamId
+    async execute(teamsOnPlayersId: string, dateNow: Date): Promise<boolean> {
+        const teamsOnPlayersData = await this.teamsOnPlayerRepository.getBydId(
+            teamsOnPlayersId
         );
-        if (!team) return;
-        team.removePlayer(chosenPlayerId);
-        return team;
+        if (!teamsOnPlayersData) return false;
+        const canRemove = teamsOnPlayersData.canRemove(dateNow);
+        if (canRemove) {
+            try {
+                const removed = await this.teamsOnPlayerRepository.remove(
+                    teamsOnPlayersId
+                );
+                return removed;
+            } catch (error) {
+                console.log(error);
+                return false;
+            }
+        }
+        return false;
     }
 }
