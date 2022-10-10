@@ -10,7 +10,7 @@ export default class CorneteiroTeam {
     constructor(
         readonly name: string,
         readonly corneteiroTeamId: string,
-        players: ChosenPlayer[],
+        players: ChosenPlayer[]
     ) {
         this.score = this.countScore(players);
         this.players = players;
@@ -20,12 +20,6 @@ export default class CorneteiroTeam {
         if (this.canAddPlayer(chosenPlayer.player.position)) {
             this.players.push(chosenPlayer);
         }
-    }
-
-    removePlayer(chosenPlayerId: string) {
-        this.players = this.players.filter(
-            (p) => p.chosenPlayerId !== chosenPlayerId
-        );
     }
 
     canAddPlayer(position: string) {
@@ -39,10 +33,10 @@ export default class CorneteiroTeam {
     }
 
     countScore(players: any): number {
-        let score = 0
+        let score = 0;
         for (const player of players) {
-            score += player?.chosenPlayer?.score
+            score += player?.chosenPlayer?.score;
         }
-        return score
+        return score;
     }
 }

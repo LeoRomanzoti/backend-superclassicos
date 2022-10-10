@@ -1,7 +1,7 @@
-import User from "../entity/User"
+import User from "../entity/User";
 
 export default interface UserRepository {
-    getById(userId: string): Promise<User | null>
-    save(phone: string): Promise<User>
-    getUsers(): Promise<Array<User>>
+    getById(userId: string): Promise<User | null>;
+    save(name: string, phone: string): Promise<User | undefined>;
+    getUsers(): Promise<User[]>;
 }

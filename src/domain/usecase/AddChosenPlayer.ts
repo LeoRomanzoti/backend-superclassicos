@@ -1,5 +1,3 @@
-import ChosenPlayer from "../entity/ChosenPlayer";
-import CorneteiroTeam from "../entity/CorneteiroTeam";
 import ChosenPlayerRepository from "../repository/ChosenPlayerRespository";
 import CorneteiroTeamRepository from "../repository/CorneteiroTeamRepository";
 

@@ -2,11 +2,12 @@ import User from "../../domain/entity/User";
 import UserRepository from "../../domain/repository/UserRepository";
 
 export default class UserRepositoryMemory implements UserRepository {
-    users: Array<User>
+    users: Array<User>;
 
     constructor() {
-        this.users = []
+        this.users = [];
     }
+
     getUsers(): Promise<User[]> {
         throw new Error("Method not implemented.");
     }
@@ -15,10 +16,13 @@ export default class UserRepositoryMemory implements UserRepository {
         throw new Error("Method not implemented.");
     }
 
-    async save(phone: string): Promise<User> {
-        const user = new User(Math.floor(Math.random() * 999999).toString(), phone, "")
-        this.users.push(user)
-        return user
+    async save(name: string, phone: string): Promise<User | undefined> {
+        const user = new User(
+            Math.floor(Math.random() * 999999).toString(),
+            phone,
+            name
+        );
+        this.users.push(user);
+        return user;
     }
-
 }
