@@ -1,15 +1,20 @@
 import { PrismaClient } from "@prisma/client";
+import ChosenPlayerAdapter from "../adapter/ChosenPlayerAdapter";
 
 import CorneteiroTeamAdapter from "../adapter/CorneteiroTeamAdapter";
 import TeamsOnPlayersAdapter from "../adapter/TeamsOnPlayersAdapter";
+import Result from "../common/Result";
 import CorneteiroTeam from "../domain/entity/CorneteiroTeam";
+import AddChosenPlayer from "../domain/usecase/AddChosenPlayer";
+import CorneteiroTeamDetail from "../domain/usecase/CorneteiroTeamDetail";
 import CreateCorneteiroTeam from "../domain/usecase/CreateCorneteiroTeam";
 import RemoveChosenPlayer from "../domain/usecase/RemoveChosenPlayer";
+import ChosenPlayerRepositoryDatabase from "../infra/database/ChosenPlayerRepositoryDatabase";
 import CorneteiroTeamRepositoryDatabase from "../infra/database/CorneteiroTeamRepositoryDatabase";
 import TeamsOnPlayersRepositoryDatabase from "../infra/database/TeamsOnPlayersRepositoryDatabase";
 
 export default class CorneteiroTeamController {
-    constructor(readonly databaseConnection: PrismaClient) {}
+    constructor(readonly databaseConnection: PrismaClient) { }
 
     async getCorneteiroTeam(
         userId: string
@@ -69,16 +74,29 @@ export default class CorneteiroTeamController {
         return itWasRemoved;
     }
 
-    async addChoenPlayer(
+    async addChosenPlayer(
         chosenPlayerId: string,
-        teamId: string
-    ): Promise<boolean> {
+        teamId: string,
+        userId: string,
+    ): Promise<Result<boolean>> {
+        const corneteiroTeamAdapter = new CorneteiroTeamAdapter();
+        const corneteiroTeamRepository = new CorneteiroTeamRepositoryDatabase(
+            this.databaseConnection,
+            corneteiroTeamAdapter
+        );
+        const corneteiroTeamDetailUseCase = new CorneteiroTeamDetail(corneteiroTeamRepository)
         const teamsOnPlayerAdapter = new TeamsOnPlayersAdapter();
         const teamsOnPlayersRepository = new TeamsOnPlayersRepositoryDatabase(
             this.databaseConnection,
             teamsOnPlayerAdapter
         );
-        const itWasAdd = teamsOnPlayersRepository.save(chosenPlayerId, teamId);
-        return itWasAdd;
+        const chosenPlayerAdapter = new ChosenPlayerAdapter();
+        const chosenPlayerRepository = new ChosenPlayerRepositoryDatabase(
+            this.databaseConnection,
+            chosenPlayerAdapter
+        );
+        const addChosenPlayerUseCase = new AddChosenPlayer(corneteiroTeamDetailUseCase, chosenPlayerRepository, teamsOnPlayersRepository)
+        const addPlayerOrError = await addChosenPlayerUseCase.execute(chosenPlayerId, teamId, userId);
+        return addPlayerOrError;
     }
 }

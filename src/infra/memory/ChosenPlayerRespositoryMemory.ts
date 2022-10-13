@@ -4,8 +4,7 @@ import Round from "../../domain/entity/Round";
 import ChosenPlayerRepository from "../../domain/repository/ChosenPlayerRespository";
 
 export default class ChosenPlayerRepositoryMemory
-    implements ChosenPlayerRepository
-{
+    implements ChosenPlayerRepository {
     chosenPlayers: Array<ChosenPlayer>;
 
     constructor() {
@@ -22,6 +21,13 @@ export default class ChosenPlayerRepositoryMemory
                 0
             ),
         ];
+    }
+
+    async updateWithPoint(chosenPlayerId: string, pointValue: number): Promise<ChosenPlayer | undefined> {
+        const chosenPlayer = this.chosenPlayers.find(c => c.chosenPlayerId === chosenPlayerId)
+        if (!chosenPlayer) return
+        chosenPlayer.score += pointValue
+        return chosenPlayer
     }
 
     async getById(chosenPlayerId: string): Promise<ChosenPlayer | undefined> {

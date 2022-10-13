@@ -1,12 +1,11 @@
-import ChosenPlayer from "../../domain/entity/ChosenPlayer";
 import CorneteiroTeam from "../../domain/entity/CorneteiroTeam";
-import Player from "../../domain/entity/Player";
 import Round from "../../domain/entity/Round";
 import CorneteiroTeamRepository from "../../domain/repository/CorneteiroTeamRepository";
+import CorneteiroTeamChosenPlayerDTO, { CorneteiroTeamChosenPlayerData } from "../../dto/in/CorneteiroTeamChosenPlayerDTO";
+import PlayerDTO from "../../dto/in/PlayerDTO";
 
 export default class CorneteiroTeamRepositoryMemory
-    implements CorneteiroTeamRepository
-{
+    implements CorneteiroTeamRepository {
     corneteirosTeam: Array<CorneteiroTeam>;
 
     constructor() {
@@ -20,25 +19,31 @@ export default class CorneteiroTeamRepositoryMemory
         this.corneteirosTeam = [
             new CorneteiroTeam("Tabajara", "1", []),
             new CorneteiroTeam("L7O", "2", [
-                new ChosenPlayer(
+                new CorneteiroTeamChosenPlayerDTO(
                     "1",
-                    new Player("1", "Pedro", "Lateral"),
-                    round,
-                    0
+                    new CorneteiroTeamChosenPlayerData(
+                        "1",
+                        0,
+                        new PlayerDTO("1", "Pedro", "Lateral"),
+                    )
                 ),
-                new ChosenPlayer(
+                new CorneteiroTeamChosenPlayerDTO(
                     "2",
-                    new Player("1", "Leo", "Atacante"),
-                    round,
-                    4
+                    new CorneteiroTeamChosenPlayerData(
+                        "2",
+                        0,
+                        new PlayerDTO("1", "Leo", "Atacante"),
+                    )
                 ),
             ]),
             new CorneteiroTeam("Leme FC", "3", [
-                new ChosenPlayer(
+                new CorneteiroTeamChosenPlayerDTO(
                     "3",
-                    new Player("1", "Pedro", "Lateral"),
-                    round,
-                    3
+                    new CorneteiroTeamChosenPlayerData(
+                        "3",
+                        0,
+                        new PlayerDTO("1", "Pedro", "Lateral"),
+                    )
                 ),
             ]),
         ];

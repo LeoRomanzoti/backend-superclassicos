@@ -24,7 +24,7 @@ model Player {
 model Round {
   id           String         @id @default(uuid())
   start_date   String
-  end_data     String
+  end_date     String
   number       Int
   chosenPlayer ChosenPlayer[]
 }
@@ -67,7 +67,7 @@ model Points {
 model ChosenPlayersOnPoints {
   id             String        @id @default(uuid())
   chosenPlayerId String?
-  ChosenPlayer   ChosenPlayer? @relation(fields: [chosenPlayerId], references: [id])
+  chosenPlayer   ChosenPlayer? @relation(fields: [chosenPlayerId], references: [id])
   point          Points        @relation(fields: [pointId], references: [id])
   pointId        String
 }

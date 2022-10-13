@@ -1,6 +1,6 @@
-export default class Player {
+export default class PlayerDTO {
     constructor(
-        readonly playerId: string,
+        readonly id: string,
         readonly name: string,
         readonly position: string
     ) { }
