@@ -12,6 +12,29 @@ export default class ChosenPlayerRepositoryDatabase
         readonly chosenPlayerAdapter: ChosenPlayerAdapter
     ) {}
 
+    async updateWithPoint(
+        chosenPlayerId: string,
+        pointValue: number
+    ): Promise<ChosenPlayer | undefined> {
+        const chosenPlayerUpdatedWithPoint =
+            await this.databaseConnection.chosenPlayer.update({
+                where: {
+                    id: chosenPlayerId,
+                },
+                data: {
+                    score: pointValue,
+                },
+                include: {
+                    player: true,
+                    round: true,
+                },
+            });
+        const chosenPlayer = this.chosenPlayerAdapter.parse(
+            chosenPlayerUpdatedWithPoint
+        );
+        return chosenPlayer;
+    }
+
     async getById(chosenPlayerId: string): Promise<ChosenPlayer | undefined> {
         const chosenPlayerData =
             await this.databaseConnection.chosenPlayer.findUnique({
@@ -33,12 +56,8 @@ export default class ChosenPlayerRepositoryDatabase
         const chosenPlayersData =
             await this.databaseConnection.chosenPlayer.findMany({
                 include: {
-                    player: {
-                        select: {
-                            name: true,
-                            position: true,
-                        },
-                    },
+                    round: true,
+                    player: true,
                 },
             });
         for (const chosenPlayerData of chosenPlayersData) {

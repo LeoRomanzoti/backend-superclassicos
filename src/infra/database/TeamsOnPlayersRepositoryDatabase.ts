@@ -72,7 +72,7 @@ export default class TeamsOnPlayersRepositoryDatabase
             teamsOnPlayersData.chosenPlayer.player.position,
             teamsOnPlayersData.chosenPlayer.round.id,
             teamsOnPlayersData.chosenPlayer.round.start_date,
-            teamsOnPlayersData.chosenPlayer.round.end_data,
+            teamsOnPlayersData.chosenPlayer.round.end_date,
             teamsOnPlayersData.chosenPlayer.round.number,
             teamsOnPlayersData?.chosenPlayer.score
         );

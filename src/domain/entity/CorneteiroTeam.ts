@@ -1,8 +1,8 @@
-import ChosenPlayer from "./ChosenPlayer";
+import CorneteiroTeamChosenPlayerDTO from "../../dto/in/CorneteiroTeamChosenPlayerDTO";
 
 export default class CorneteiroTeam {
     score: number;
-    players: ChosenPlayer[];
+    players: CorneteiroTeamChosenPlayerDTO[];
 
     private TOTAL_PLAYER = 11;
     private MAX_PLAYER_PER_POSITION = 2;
@@ -10,26 +10,28 @@ export default class CorneteiroTeam {
     constructor(
         readonly name: string,
         readonly corneteiroTeamId: string,
-        players: ChosenPlayer[]
+        players: CorneteiroTeamChosenPlayerDTO[]
     ) {
         this.score = this.countScore(players);
         this.players = players;
     }
 
-    addPlayer(chosenPlayer: ChosenPlayer) {
-        if (this.canAddPlayer(chosenPlayer.player.position)) {
-            this.players.push(chosenPlayer);
-        }
+    addPlayer(chosenPlayer: CorneteiroTeamChosenPlayerDTO): void {
+        this.players.push(chosenPlayer);
     }
 
-    canAddPlayer(position: string) {
-        if (this.players.length >= this.TOTAL_PLAYER) return false;
+    isFull() {
+        if (this.players.length >= this.TOTAL_PLAYER) return true;
+        return false;
+    }
+
+    positionIsFull(position: string): boolean {
         const quantityPlayersFromPositiion = this.players.filter(
-            (player) => player.player.position === position
+            (player) => player?.chosenPlayer?.player?.position === position
         );
         if (quantityPlayersFromPositiion.length >= this.MAX_PLAYER_PER_POSITION)
-            return false;
-        return true;
+            return true;
+        return false;
     }
 
     countScore(players: any): number {
@@ -38,5 +40,13 @@ export default class CorneteiroTeam {
             score += player?.chosenPlayer?.score;
         }
         return score;
+    }
+
+    playerAlreadyExist(chosenPlayerId: string): boolean {
+        const hasPlayer = this.players.find(
+            (player) => player?.chosenPlayer?.id === chosenPlayerId
+        );
+        if (hasPlayer) return true;
+        return false;
     }
 }

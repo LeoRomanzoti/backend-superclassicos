@@ -1,11 +1,12 @@
 import ChosenPlayer from "../domain/entity/ChosenPlayer";
 import Player from "../domain/entity/Player";
 import Round from "../domain/entity/Round";
+import ChosenPlayerDTO from "../dto/in/ChosenPlayerDTO";
 
-export default class CorneteiroTeamAdapter {
+export default class ChosenPlayerAdapter {
     constructor() {}
 
-    parse(chosenPlayerData: any) {
+    parse(chosenPlayerData: ChosenPlayerDTO) {
         const player = new Player(
             chosenPlayerData?.player?.id,
             chosenPlayerData?.player?.name,
@@ -13,8 +14,8 @@ export default class CorneteiroTeamAdapter {
         );
         const round = new Round(
             chosenPlayerData?.round?.id,
-            chosenPlayerData?.round?.start_date,
-            chosenPlayerData?.round?.end_data,
+            new Date(chosenPlayerData?.round?.start_date),
+            new Date(chosenPlayerData?.round?.end_date),
             chosenPlayerData?.round?.number
         );
         const chosenPlayer = new ChosenPlayer(

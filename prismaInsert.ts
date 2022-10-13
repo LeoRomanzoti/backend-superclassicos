@@ -38,20 +38,11 @@ const prisma = new PrismaClient()
 // })
 // addPlayer.then(res => console.log(res))
 
-const addPlayer = prisma.teamsOnPlayers.findUnique({
-    where: {
-        id: "fc36b37d-78de-482e-87be-13433dd8b057"
-    },
+
+const addPlayer = prisma.chosenPlayersOnPoints.findMany({
     select: {
         id: true,
-        teamId: true,
-        chosenPlayer: {
-            select: {
-                score: true,
-                player: true,
-                round: true
-            }
-        }
+        point: true
     }
 })
 addPlayer.then(res => console.log(res))

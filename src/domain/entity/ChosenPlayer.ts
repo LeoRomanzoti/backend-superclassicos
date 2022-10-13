@@ -16,4 +16,8 @@ export default class ChosenPlayer {
         this.player = player;
         this.round = round;
     }
+
+    sumPoint(pointValue: number): number {
+        return (this.score += pointValue);
+    }
 }

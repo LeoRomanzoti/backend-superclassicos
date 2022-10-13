@@ -24,6 +24,18 @@ export default class ChosenPlayerRepositoryMemory
         ];
     }
 
+    async updateWithPoint(
+        chosenPlayerId: string,
+        pointValue: number
+    ): Promise<ChosenPlayer | undefined> {
+        const chosenPlayer = this.chosenPlayers.find(
+            (c) => c.chosenPlayerId === chosenPlayerId
+        );
+        if (!chosenPlayer) return;
+        chosenPlayer.score += pointValue;
+        return chosenPlayer;
+    }
+
     async getById(chosenPlayerId: string): Promise<ChosenPlayer | undefined> {
         const chosenPlayer = this.chosenPlayers.find(
             (cp) => cp.chosenPlayerId === chosenPlayerId

@@ -57,7 +57,18 @@ export default class CorneteiroTeamRepositoryDatabase
                 select: {
                     id: true,
                     name: true,
-                    teamsOnPlayers: true,
+                    teamsOnPlayers: {
+                        select: {
+                            id: true,
+                            chosenPlayer: {
+                                select: {
+                                    id: true,
+                                    score: true,
+                                    player: true,
+                                },
+                            },
+                        },
+                    },
                 },
             }
         );
@@ -86,6 +97,7 @@ export default class CorneteiroTeamRepositoryDatabase
                             id: true,
                             chosenPlayer: {
                                 select: {
+                                    id: true,
                                     score: true,
                                     player: true,
                                 },
