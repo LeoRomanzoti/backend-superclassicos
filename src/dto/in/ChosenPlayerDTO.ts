@@ -9,5 +9,5 @@ export default class ChosenPlayerDTO {
         readonly score: number,
         readonly player: PlayerDTO,
         readonly round: RoundDTO
-    ) { }
+    ) {}
 }

@@ -29,7 +29,8 @@ export default class CorneteiroTeam {
         const quantityPlayersFromPositiion = this.players.filter(
             (player) => player?.chosenPlayer?.player?.position === position
         );
-        if (quantityPlayersFromPositiion.length >= this.MAX_PLAYER_PER_POSITION) return true;
+        if (quantityPlayersFromPositiion.length >= this.MAX_PLAYER_PER_POSITION)
+            return true;
         return false;
     }
 

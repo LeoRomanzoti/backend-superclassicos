@@ -3,5 +3,5 @@ export default class PlayerDTO {
         readonly id: string,
         readonly name: string,
         readonly position: string
-    ) { }
+    ) {}
 }

@@ -4,5 +4,5 @@ export default class Point {
         readonly value: number,
         readonly label: string,
         readonly code: string
-    ) { }
+    ) {}
 }

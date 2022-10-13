@@ -1,37 +1,41 @@
 import { PrismaClient } from "@prisma/client";
+
 import ChosenPlayersOnPointsRepository from "../../domain/repository/ChosenPlayersOnPointsRepository";
 import ChosenPlayersOnPointsListDTO from "../../dto/in/ChosenPlayersOnPointsListDTO";
 
-export default class ChosenPlayersOnPointsRepositoryDatabase implements ChosenPlayersOnPointsRepository {
-    constructor(
-        readonly databaseConnection: PrismaClient
-    ) { }
+export default class ChosenPlayersOnPointsRepositoryDatabase
+    implements ChosenPlayersOnPointsRepository
+{
+    constructor(readonly databaseConnection: PrismaClient) {}
 
     async save(pointId: string, chosenPlayerId: string): Promise<boolean> {
         try {
-            const newPoint = await this.databaseConnection.chosenPlayersOnPoints.create({
+            await this.databaseConnection.chosenPlayersOnPoints.create({
                 data: {
-                    pointId: pointId,
-                    chosenPlayerId: chosenPlayerId,
-                }
-            })
-            return true
+                    pointId,
+                    chosenPlayerId,
+                },
+            });
+            return true;
         } catch (error) {
-            console.log(error)
-            return false
+            console.log(error);
+            return false;
         }
     }
 
-    async getByChosenPlayerId(chosenPlayerId: string): Promise<ChosenPlayersOnPointsListDTO[]> {
-        const chosenPlayersOnPoints = await this.databaseConnection.chosenPlayersOnPoints.findMany({
-            where: {
-                chosenPlayerId: chosenPlayerId
-            },
-            select: {
-                id: true,
-                point: true
-            }
-        })
-        return chosenPlayersOnPoints
+    async getByChosenPlayerId(
+        chosenPlayerId: string
+    ): Promise<ChosenPlayersOnPointsListDTO[]> {
+        const chosenPlayersOnPoints =
+            await this.databaseConnection.chosenPlayersOnPoints.findMany({
+                where: {
+                    chosenPlayerId,
+                },
+                select: {
+                    id: true,
+                    point: true,
+                },
+            });
+        return chosenPlayersOnPoints;
     }
 }

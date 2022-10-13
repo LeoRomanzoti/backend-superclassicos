@@ -1,21 +1,16 @@
 import CorneteiroTeam from "../../domain/entity/CorneteiroTeam";
-import Round from "../../domain/entity/Round";
 import CorneteiroTeamRepository from "../../domain/repository/CorneteiroTeamRepository";
-import CorneteiroTeamChosenPlayerDTO, { CorneteiroTeamChosenPlayerData } from "../../dto/in/CorneteiroTeamChosenPlayerDTO";
+import CorneteiroTeamChosenPlayerDTO, {
+    CorneteiroTeamChosenPlayerData,
+} from "../../dto/in/CorneteiroTeamChosenPlayerDTO";
 import PlayerDTO from "../../dto/in/PlayerDTO";
 
 export default class CorneteiroTeamRepositoryMemory
-    implements CorneteiroTeamRepository {
+    implements CorneteiroTeamRepository
+{
     corneteirosTeam: Array<CorneteiroTeam>;
 
     constructor() {
-        const round = new Round(
-            "1",
-            new Date("2022-10-22"),
-            new Date("2022-10-29"),
-            1
-        );
-
         this.corneteirosTeam = [
             new CorneteiroTeam("Tabajara", "1", []),
             new CorneteiroTeam("L7O", "2", [
@@ -24,7 +19,7 @@ export default class CorneteiroTeamRepositoryMemory
                     new CorneteiroTeamChosenPlayerData(
                         "1",
                         0,
-                        new PlayerDTO("1", "Pedro", "Lateral"),
+                        new PlayerDTO("1", "Pedro", "Lateral")
                     )
                 ),
                 new CorneteiroTeamChosenPlayerDTO(
@@ -32,7 +27,7 @@ export default class CorneteiroTeamRepositoryMemory
                     new CorneteiroTeamChosenPlayerData(
                         "2",
                         0,
-                        new PlayerDTO("1", "Leo", "Atacante"),
+                        new PlayerDTO("1", "Leo", "Atacante")
                     )
                 ),
             ]),
@@ -42,7 +37,7 @@ export default class CorneteiroTeamRepositoryMemory
                     new CorneteiroTeamChosenPlayerData(
                         "3",
                         0,
-                        new PlayerDTO("1", "Pedro", "Lateral"),
+                        new PlayerDTO("1", "Pedro", "Lateral")
                     )
                 ),
             ]),

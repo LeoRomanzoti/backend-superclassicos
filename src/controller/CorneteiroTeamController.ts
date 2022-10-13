@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import ChosenPlayerAdapter from "../adapter/ChosenPlayerAdapter";
 
+import ChosenPlayerAdapter from "../adapter/ChosenPlayerAdapter";
 import CorneteiroTeamAdapter from "../adapter/CorneteiroTeamAdapter";
 import TeamsOnPlayersAdapter from "../adapter/TeamsOnPlayersAdapter";
 import Result from "../common/Result";
@@ -14,7 +14,7 @@ import CorneteiroTeamRepositoryDatabase from "../infra/database/CorneteiroTeamRe
 import TeamsOnPlayersRepositoryDatabase from "../infra/database/TeamsOnPlayersRepositoryDatabase";
 
 export default class CorneteiroTeamController {
-    constructor(readonly databaseConnection: PrismaClient) { }
+    constructor(readonly databaseConnection: PrismaClient) {}
 
     async getCorneteiroTeam(
         userId: string
@@ -77,14 +77,16 @@ export default class CorneteiroTeamController {
     async addChosenPlayer(
         chosenPlayerId: string,
         teamId: string,
-        userId: string,
+        userId: string
     ): Promise<Result<boolean>> {
         const corneteiroTeamAdapter = new CorneteiroTeamAdapter();
         const corneteiroTeamRepository = new CorneteiroTeamRepositoryDatabase(
             this.databaseConnection,
             corneteiroTeamAdapter
         );
-        const corneteiroTeamDetailUseCase = new CorneteiroTeamDetail(corneteiroTeamRepository)
+        const corneteiroTeamDetailUseCase = new CorneteiroTeamDetail(
+            corneteiroTeamRepository
+        );
         const teamsOnPlayerAdapter = new TeamsOnPlayersAdapter();
         const teamsOnPlayersRepository = new TeamsOnPlayersRepositoryDatabase(
             this.databaseConnection,
@@ -95,8 +97,16 @@ export default class CorneteiroTeamController {
             this.databaseConnection,
             chosenPlayerAdapter
         );
-        const addChosenPlayerUseCase = new AddChosenPlayer(corneteiroTeamDetailUseCase, chosenPlayerRepository, teamsOnPlayersRepository)
-        const addPlayerOrError = await addChosenPlayerUseCase.execute(chosenPlayerId, teamId, userId);
+        const addChosenPlayerUseCase = new AddChosenPlayer(
+            corneteiroTeamDetailUseCase,
+            chosenPlayerRepository,
+            teamsOnPlayersRepository
+        );
+        const addPlayerOrError = await addChosenPlayerUseCase.execute(
+            chosenPlayerId,
+            teamId,
+            userId
+        );
         return addPlayerOrError;
     }
 }

@@ -93,14 +93,17 @@ export default class Routes {
                     this.databaseConnection
                 );
                 try {
-                    const addPlayerOrError = await corneteiroTeamController.addChosenPlayer(
-                        req?.body?.chosen_player_id,
-                        req?.params?.teamId,
-                        req?.params?.userId
-                    );
+                    const addPlayerOrError =
+                        await corneteiroTeamController.addChosenPlayer(
+                            req?.body?.chosen_player_id,
+                            req?.params?.teamId,
+                            req?.params?.userId
+                        );
 
                     if (addPlayerOrError.isFailure)
-                        return res.status(404).json({ message: addPlayerOrError.error });
+                        return res
+                            .status(404)
+                            .json({ message: addPlayerOrError.error });
                     res.json({});
                 } catch (error) {
                     return res.status(401).json({ message: error });
@@ -132,24 +135,42 @@ export default class Routes {
             res.json(points);
         });
 
-        this.http.post("/chosen-players/:chosenPlayerId/points", async (req: any, res: any) => {
-            const chosenPlayersOnPointsController = new ChosenPlayersOnPointsController(
-                this.databaseConnection
-            );
-            const chosenPlayerWithUpdatedIdOrError = await chosenPlayersOnPointsController.addPoint(req?.body?.point_id, req?.params?.chosenPlayerId);
+        this.http.post(
+            "/chosen-players/:chosenPlayerId/points",
+            async (req: any, res: any) => {
+                const chosenPlayersOnPointsController =
+                    new ChosenPlayersOnPointsController(
+                        this.databaseConnection
+                    );
+                const chosenPlayerWithUpdatedIdOrError =
+                    await chosenPlayersOnPointsController.addPoint(
+                        req?.body?.point_id,
+                        req?.params?.chosenPlayerId
+                    );
 
-            if (chosenPlayerWithUpdatedIdOrError.isFailure) return res.status(400).json({ message: chosenPlayerWithUpdatedIdOrError.error });
+                if (chosenPlayerWithUpdatedIdOrError.isFailure)
+                    return res.status(400).json({
+                        message: chosenPlayerWithUpdatedIdOrError.error,
+                    });
 
-            res.json(chosenPlayerWithUpdatedIdOrError.getValue());
-        });
+                res.json(chosenPlayerWithUpdatedIdOrError.getValue());
+            }
+        );
 
-        this.http.get("/chosen-players/:chosenPlayerId/points", async (req: any, res: any) => {
-            const chosenPlayersOnPointsController = new ChosenPlayersOnPointsController(
-                this.databaseConnection
-            );
-            const chosenPlayerPoints = await chosenPlayersOnPointsController.getAllByChosenPlayerId(req?.params?.chosenPlayerId);
+        this.http.get(
+            "/chosen-players/:chosenPlayerId/points",
+            async (req: any, res: any) => {
+                const chosenPlayersOnPointsController =
+                    new ChosenPlayersOnPointsController(
+                        this.databaseConnection
+                    );
+                const chosenPlayerPoints =
+                    await chosenPlayersOnPointsController.getAllByChosenPlayerId(
+                        req?.params?.chosenPlayerId
+                    );
 
-            res.json(chosenPlayerPoints);
-        });
+                res.json(chosenPlayerPoints);
+            }
+        );
     }
 }

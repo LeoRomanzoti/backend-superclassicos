@@ -4,7 +4,7 @@ import Round from "../domain/entity/Round";
 import ChosenPlayerDTO from "../dto/in/ChosenPlayerDTO";
 
 export default class ChosenPlayerAdapter {
-    constructor() { }
+    constructor() {}
 
     parse(chosenPlayerData: ChosenPlayerDTO) {
         const player = new Player(

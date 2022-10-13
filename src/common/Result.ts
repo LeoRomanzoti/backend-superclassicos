@@ -1,6 +1,6 @@
 export default class Result<T> {
     public isSuccess: boolean;
-    public isFailure: boolean
+    public isFailure: boolean;
     public error: string | undefined;
     private _value: T | undefined;
 
@@ -24,7 +24,7 @@ export default class Result<T> {
 
     public getValue(): T | undefined {
         if (!this.isSuccess) {
-            throw new Error(`Cant retrieve the value from a failed result.`)
+            throw new Error(`Cant retrieve the value from a failed result.`);
         }
 
         return this._value;
@@ -39,7 +39,7 @@ export default class Result<T> {
     }
 
     public static combine(results: Result<any>[]): Result<any> {
-        for (let result of results) {
+        for (const result of results) {
             if (result.isFailure) return result;
         }
         return Result.ok<any>();

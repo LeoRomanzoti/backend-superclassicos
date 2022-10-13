@@ -18,6 +18,6 @@ export default class ChosenPlayer {
     }
 
     sumPoint(pointValue: number): number {
-        return this.score += pointValue
+        return (this.score += pointValue);
     }
 }

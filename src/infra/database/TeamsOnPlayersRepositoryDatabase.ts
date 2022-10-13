@@ -5,11 +5,12 @@ import TeamsOnPlayers from "../../domain/entity/TeamsOnPlayers";
 import TeamsOnPlayersRepository from "../../domain/repository/TeamsOnPlayersRepository";
 
 export default class TeamsOnPlayersRepositoryDatabase
-    implements TeamsOnPlayersRepository {
+    implements TeamsOnPlayersRepository
+{
     constructor(
         readonly teamsOnPlayersDatabase: PrismaClient,
         readonly teamsOnPlayersAdapter: TeamsOnPlayersAdapter
-    ) { }
+    ) {}
 
     async save(chosenPlayerId: string, teamId: string): Promise<boolean> {
         try {

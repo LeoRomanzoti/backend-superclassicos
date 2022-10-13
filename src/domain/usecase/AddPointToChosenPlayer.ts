@@ -5,19 +5,32 @@ import ChosenPlayerOnPointsRespository from "../repository/ChosenPlayersOnPoints
 import PointRepository from "../repository/PointRepository";
 
 export default class AddPointToChosenPlayer {
-    constructor(readonly chosenPlayerOnPointsRepository: ChosenPlayerOnPointsRespository, readonly chosenPlayerRepository: ChosenPlayerRepository, readonly pointRepository: PointRepository) { }
+    constructor(
+        readonly chosenPlayerOnPointsRepository: ChosenPlayerOnPointsRespository,
+        readonly chosenPlayerRepository: ChosenPlayerRepository,
+        readonly pointRepository: PointRepository
+    ) {}
 
-    async execute(pointId: string, chosenPlayerId: string): Promise<Result<ChosenPlayer>> {
-        const chosenPlayer = await this.chosenPlayerRepository.getById(chosenPlayerId)
-        if (!chosenPlayer) return Result.fail('Jogador não existe.')
+    async execute(
+        pointId: string,
+        chosenPlayerId: string
+    ): Promise<Result<ChosenPlayer>> {
+        const chosenPlayer = await this.chosenPlayerRepository.getById(
+            chosenPlayerId
+        );
+        if (!chosenPlayer) return Result.fail("Jogador não existe.");
 
-        const point = await this.pointRepository.getById(pointId)
-        if (!point) return Result.fail('Ponto não existe.')
+        const point = await this.pointRepository.getById(pointId);
+        if (!point) return Result.fail("Ponto não existe.");
 
-        const sumPointToUpdate = chosenPlayer.sumPoint(point?.value)
-        await this.chosenPlayerOnPointsRepository.save(pointId, chosenPlayerId)
-        const chosenPlayerUpdated = await this.chosenPlayerRepository.updateWithPoint(chosenPlayerId, sumPointToUpdate)
+        const sumPointToUpdate = chosenPlayer.sumPoint(point?.value);
+        await this.chosenPlayerOnPointsRepository.save(pointId, chosenPlayerId);
+        const chosenPlayerUpdated =
+            await this.chosenPlayerRepository.updateWithPoint(
+                chosenPlayerId,
+                sumPointToUpdate
+            );
 
-        return Result.ok(chosenPlayerUpdated)
+        return Result.ok(chosenPlayerUpdated);
     }
 }

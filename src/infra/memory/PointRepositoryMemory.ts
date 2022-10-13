@@ -2,11 +2,9 @@ import Point from "../../domain/entity/Point";
 import PointRepository from "../../domain/repository/PointRepository";
 
 export default class PointRepositoryMemory implements PointRepository {
-    points: Point[]
+    points: Point[];
     constructor() {
-        this.points = [
-            new Point("1", 8, "Gol", "G")
-        ]
+        this.points = [new Point("1", 8, "Gol", "G")];
     }
 
     list(): Promise<Point[] | undefined> {
@@ -14,6 +12,6 @@ export default class PointRepositoryMemory implements PointRepository {
     }
 
     async getById(pointId: string): Promise<Point | undefined> {
-        return this.points.find(p => p.id === pointId)
+        return this.points.find((p) => p.id === pointId);
     }
 }
