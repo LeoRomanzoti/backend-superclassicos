@@ -47,7 +47,7 @@ export default class TeamsOnPlayersRepositoryDatabase
         const teamsOnPlayersData =
             await this.teamsOnPlayersDatabase.teamsOnPlayers.findUnique({
                 where: {
-                    id: "fc36b37d-78de-482e-87be-13433dd8b057",
+                    id: teamsOnPlayersId,
                 },
                 select: {
                     id: true,
@@ -74,6 +74,7 @@ export default class TeamsOnPlayersRepositoryDatabase
             teamsOnPlayersData.chosenPlayer.round.start_date,
             teamsOnPlayersData.chosenPlayer.round.end_date,
             teamsOnPlayersData.chosenPlayer.round.number,
+            teamsOnPlayersData.chosenPlayer.round.open,
             teamsOnPlayersData?.chosenPlayer.score
         );
         return teamsOnPlayers;

@@ -15,6 +15,7 @@ export default class TeamsOnPlayersAdapter {
         roundStartDate: string,
         roundEndDate: string,
         roundNumber: number,
+        roundOpen: boolean,
         score: number
     ) {
         const playerData = new Player(playerId, playerName, playerPposition);
@@ -22,7 +23,8 @@ export default class TeamsOnPlayersAdapter {
             roundId,
             new Date(roundStartDate),
             new Date(roundEndDate),
-            roundNumber
+            roundNumber,
+            roundOpen
         );
         const chosenPlayer = new ChosenPlayer(
             chosenPlayerId,

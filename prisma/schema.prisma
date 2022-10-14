@@ -26,6 +26,7 @@ model Round {
   start_date   String
   end_date     String
   number       Int
+  open         Boolean
   chosenPlayer ChosenPlayer[]
 }
 

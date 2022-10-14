@@ -16,7 +16,8 @@ export default class ChosenPlayerAdapter {
             chosenPlayerData?.round?.id,
             new Date(chosenPlayerData?.round?.start_date),
             new Date(chosenPlayerData?.round?.end_date),
-            chosenPlayerData?.round?.number
+            chosenPlayerData?.round?.number,
+            chosenPlayerData?.round?.open
         );
         const chosenPlayer = new ChosenPlayer(
             chosenPlayerData?.id,

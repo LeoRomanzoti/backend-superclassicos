@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 import ChosenPlayerAdapter from "../adapter/ChosenPlayerAdapter";
 import CorneteiroTeamAdapter from "../adapter/CorneteiroTeamAdapter";
+import RoundAdapter from "../adapter/RoundAdapter";
 import TeamsOnPlayersAdapter from "../adapter/TeamsOnPlayersAdapter";
 import Result from "../common/Result";
 import CorneteiroTeam from "../domain/entity/CorneteiroTeam";
@@ -11,6 +12,7 @@ import CreateCorneteiroTeam from "../domain/usecase/CreateCorneteiroTeam";
 import RemoveChosenPlayer from "../domain/usecase/RemoveChosenPlayer";
 import ChosenPlayerRepositoryDatabase from "../infra/database/ChosenPlayerRepositoryDatabase";
 import CorneteiroTeamRepositoryDatabase from "../infra/database/CorneteiroTeamRepositoryDatabase";
+import RoundRepositoryDatabase from "../infra/database/RoundRepositoryDatabase";
 import TeamsOnPlayersRepositoryDatabase from "../infra/database/TeamsOnPlayersRepositoryDatabase";
 
 export default class CorneteiroTeamController {
@@ -58,7 +60,7 @@ export default class CorneteiroTeamController {
         return newCorneteiroTeam;
     }
 
-    async removePlayer(teamsOnPlayersId: string): Promise<boolean> {
+    async removePlayer(teamsOnPlayersId: string): Promise<Result<boolean>> {
         const teamsOnPlayerAdapter = new TeamsOnPlayersAdapter();
         const teamsOnPlayersRepository = new TeamsOnPlayersRepositoryDatabase(
             this.databaseConnection,
@@ -77,7 +79,8 @@ export default class CorneteiroTeamController {
     async addChosenPlayer(
         chosenPlayerId: string,
         teamId: string,
-        userId: string
+        userId: string,
+        dateNow: Date
     ): Promise<Result<boolean>> {
         const corneteiroTeamAdapter = new CorneteiroTeamAdapter();
         const corneteiroTeamRepository = new CorneteiroTeamRepositoryDatabase(
@@ -97,15 +100,22 @@ export default class CorneteiroTeamController {
             this.databaseConnection,
             chosenPlayerAdapter
         );
+        const roundAdapter = new RoundAdapter();
+        const roundRepository = new RoundRepositoryDatabase(
+            this.databaseConnection,
+            roundAdapter
+        );
         const addChosenPlayerUseCase = new AddChosenPlayer(
             corneteiroTeamDetailUseCase,
             chosenPlayerRepository,
-            teamsOnPlayersRepository
+            teamsOnPlayersRepository,
+            roundRepository
         );
         const addPlayerOrError = await addChosenPlayerUseCase.execute(
             chosenPlayerId,
             teamId,
-            userId
+            userId,
+            dateNow
         );
         return addPlayerOrError;
     }

@@ -3,6 +3,7 @@ export default class RoundDTO {
         readonly id: string,
         readonly start_date: string,
         readonly end_date: string,
-        readonly number: number
+        readonly number: number,
+        readonly open: boolean
     ) {}
 }

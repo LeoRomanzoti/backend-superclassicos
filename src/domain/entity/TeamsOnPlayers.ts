@@ -9,7 +9,7 @@ export default class TeamsOnPlayers {
     ) {}
 
     canRemove(dateNow: Date): boolean {
-        if (this.chosenPlayer.round.endDate > dateNow) return true;
+        if (this.chosenPlayer.round.endDate >= dateNow) return true;
         return false;
     }
 }

@@ -11,7 +11,7 @@ export default class PlayerRepositoryMemory implements PlayerRepository {
         ];
     }
 
-    getById(playerId: string): Player | undefined {
+    async getById(playerId: string): Promise<Player | undefined> {
         const player = this.players.find((p) => p.playerId === playerId);
         return player;
     }
