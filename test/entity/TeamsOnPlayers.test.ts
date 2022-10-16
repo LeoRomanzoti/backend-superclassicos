@@ -5,7 +5,7 @@ import TeamsOnPlayers from "../../src/domain/entity/TeamsOnPlayers"
 
 test('should can remove a teamsOnPlayers', () => {
     const player = new Player("1", "Pedro", "Lateral")
-    const round = new Round("1", new Date("2022-10-22"), new Date("2022-10-29"), 1)
+    const round = new Round("1", new Date("2022-10-22"), new Date("2022-10-29"), 1, true)
     const chosenPlayer = new ChosenPlayer("01", player, round, 0)
 
     const teamsOnPlayers = new TeamsOnPlayers("01", "01", "01", chosenPlayer)
@@ -15,7 +15,7 @@ test('should can remove a teamsOnPlayers', () => {
 
 test('should not remove a teamsOnPlayers', () => {
     const player = new Player("1", "Pedro", "Lateral")
-    const round = new Round("1", new Date("2022-10-22"), new Date("2022-10-29"), 1)
+    const round = new Round("1", new Date("2022-10-22"), new Date("2022-10-29"), 1, true)
     const chosenPlayer = new ChosenPlayer("01", player, round, 0)
 
     const teamsOnPlayers = new TeamsOnPlayers("01", "01", "01", chosenPlayer)

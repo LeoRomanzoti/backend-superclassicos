@@ -13,12 +13,12 @@ test("should remove one player from a corneteiro team", async () => {
         teamsOnPlayersRepository,
     );
 
-    const itWasRemoved = await removePlayerUseCase.execute(
+    const itWasRemovedOrerror = await removePlayerUseCase.execute(
         input.teamsOnPlayersId,
         new Date('2022-10-28')
     );
 
-    expect(itWasRemoved).toBe(true);
+    expect(itWasRemovedOrerror.getValue()).toBe(true);
 });
 
 test("should not remove one player from a corneteiro team", async () => {
@@ -32,12 +32,12 @@ test("should not remove one player from a corneteiro team", async () => {
         teamsOnPlayersRepository,
     );
 
-    const itWasRemoved = await removePlayerUseCase.execute(
+    const itWasRemovedOrerror = await removePlayerUseCase.execute(
         input.teamsOnPlayersId,
         new Date('2022-10-30')
     );
 
-    expect(itWasRemoved).toBe(false);
+    expect(itWasRemovedOrerror.isFailure).toBe(true);
 });
 
 // test("should not remove a chosen player from a corneteiro team", async () => {

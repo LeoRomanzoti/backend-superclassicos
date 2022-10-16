@@ -8,10 +8,13 @@ export default class CreateChosenPlayer {
         readonly roundRepository: RoundRepository
     ) {}
 
-    execute(playerId: string, roundId: string): ChosenPlayer | undefined {
-        const player = this.playerRepository.getById(playerId);
+    async execute(
+        playerId: string,
+        roundId: string
+    ): Promise<ChosenPlayer | undefined> {
+        const player = await this.playerRepository.getById(playerId);
         if (!player) return;
-        const round = this.roundRepository.getById(roundId);
+        const round = await this.roundRepository.getById(roundId);
         if (!round) return;
         return new ChosenPlayer("1", player, round, 0);
     }

@@ -76,12 +76,14 @@ export default class Routes {
                 const corneteiroTeamController = new CorneteiroTeamController(
                     this.databaseConnection
                 );
-                const itWasRemoved =
+                const itWasRemovedOrError =
                     await corneteiroTeamController.removePlayer(
                         req?.params?.teamsOnPlayersId
                     );
-                if (!itWasRemoved)
-                    return res.status(404).json({ message: "Error" });
+                if (itWasRemovedOrError.isFailure)
+                    return res
+                        .status(403)
+                        .json({ message: itWasRemovedOrError.error });
                 res.json({});
             }
         );
@@ -97,7 +99,8 @@ export default class Routes {
                         await corneteiroTeamController.addChosenPlayer(
                             req?.body?.chosen_player_id,
                             req?.params?.teamId,
-                            req?.params?.userId
+                            req?.params?.userId,
+                            new Date()
                         );
 
                     if (addPlayerOrError.isFailure)

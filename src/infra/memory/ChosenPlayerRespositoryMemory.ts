@@ -17,7 +17,8 @@ export default class ChosenPlayerRepositoryMemory
                     "1",
                     new Date("2022-10-22"),
                     new Date("2022-10-29"),
-                    1
+                    1,
+                    true
                 ),
                 0
             ),

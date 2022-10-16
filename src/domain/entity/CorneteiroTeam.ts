@@ -20,7 +20,7 @@ export default class CorneteiroTeam {
         this.players.push(chosenPlayer);
     }
 
-    isFull() {
+    isFull(): boolean {
         if (this.players.length >= this.TOTAL_PLAYER) return true;
         return false;
     }

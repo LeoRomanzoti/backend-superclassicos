@@ -1,5 +1,5 @@
 import Player from "../entity/Player";
 
 export default interface PlayerRepository {
-    getById(playerId: string): Player | undefined;
+    getById(playerId: string): Promise<Player | undefined>;
 }

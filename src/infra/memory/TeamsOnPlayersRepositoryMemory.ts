@@ -16,7 +16,8 @@ export default class TeamsOnPlayersRepositoryMemory
             "1",
             new Date("2022-10-22"),
             new Date("2022-10-29"),
-            1
+            1,
+            true
         );
         const chosenPlayer = new ChosenPlayer("01", player, round, 0);
 
@@ -50,6 +51,7 @@ export default class TeamsOnPlayersRepositoryMemory
             playerData.chosenPlayer.round.startDate.toString(),
             playerData.chosenPlayer.round.endDate.toString(),
             playerData.chosenPlayer.round.number,
+            playerData.chosenPlayer.round.open,
             playerData?.chosenPlayer.score
         );
         return teamsOnPlayers;
@@ -61,7 +63,8 @@ export default class TeamsOnPlayersRepositoryMemory
             "1",
             new Date("2022-10-22"),
             new Date("2022-10-29"),
-            1
+            1,
+            true
         );
         const chosenPlayer = new ChosenPlayer("01", player, round, 0);
         const newTeamsOnPlayers = new TeamsOnPlayers(
