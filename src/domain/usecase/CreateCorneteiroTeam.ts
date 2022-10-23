@@ -4,10 +4,7 @@ import CorneteiroTeamRepository from "../repository/CorneteiroTeamRepository";
 export default class CreateCorneteiroTeam {
     constructor(readonly corneteiroTeamRepository: CorneteiroTeamRepository) {}
 
-    async execute(
-        teamName: string,
-        userId: string
-    ): Promise<CorneteiroTeam | undefined> {
+    async execute(teamName: string, userId: string): Promise<CorneteiroTeam> {
         const newCorneteiroTeam = await this.corneteiroTeamRepository.save(
             teamName,
             userId

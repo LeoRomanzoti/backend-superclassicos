@@ -8,8 +8,10 @@ import Result from "../common/Result";
 import CorneteiroTeam from "../domain/entity/CorneteiroTeam";
 import AddChosenPlayer from "../domain/usecase/AddChosenPlayer";
 import CorneteiroTeamDetail from "../domain/usecase/CorneteiroTeamDetail";
+import CorneteiroTeamRanking from "../domain/usecase/CorneteiroTeamRanking";
 import CreateCorneteiroTeam from "../domain/usecase/CreateCorneteiroTeam";
 import RemoveChosenPlayer from "../domain/usecase/RemoveChosenPlayer";
+import CorneteiroTeamShort from "../dto/out/CorneteiroTeamShort";
 import ChosenPlayerRepositoryDatabase from "../infra/database/ChosenPlayerRepositoryDatabase";
 import CorneteiroTeamRepositoryDatabase from "../infra/database/CorneteiroTeamRepositoryDatabase";
 import RoundRepositoryDatabase from "../infra/database/RoundRepositoryDatabase";
@@ -118,5 +120,16 @@ export default class CorneteiroTeamController {
             dateNow
         );
         return addPlayerOrError;
+    }
+
+    async getRanking(): Promise<CorneteiroTeamShort[]> {
+        const corneteiroTeamAdapter = new CorneteiroTeamAdapter();
+        const corneteiroTeamRepository = new CorneteiroTeamRepositoryDatabase(
+            this.databaseConnection,
+            corneteiroTeamAdapter
+        );
+        const usecase = new CorneteiroTeamRanking(corneteiroTeamRepository);
+        const ranking = usecase.execute();
+        return ranking;
     }
 }

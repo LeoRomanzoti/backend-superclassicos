@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import CorneteiroTeamAdapter from "../../adapter/CorneteiroTeamAdapter";
 import CorneteiroTeam from "../../domain/entity/CorneteiroTeam";
 import CorneteiroTeamRepository from "../../domain/repository/CorneteiroTeamRepository";
+import CorneteiroTeamShort from "../../dto/out/CorneteiroTeamShort";
 
 export default class CorneteiroTeamRepositoryDatabase
     implements CorneteiroTeamRepository
@@ -27,30 +28,22 @@ export default class CorneteiroTeamRepositoryDatabase
         }
     }
 
-    async save(
-        teamName: string,
-        userId: string
-    ): Promise<CorneteiroTeam | undefined> {
-        try {
-            const corneteiroTeamData =
-                await this.databaseConnection.team.create({
-                    data: {
-                        userId,
-                        name: teamName,
-                    },
-                });
-            const corneteiroTeam = this.corneteiroTeamAdapter.parse(
-                corneteiroTeamData.name,
-                corneteiroTeamData.id,
-                []
-            );
-            return corneteiroTeam;
-        } catch (error) {
-            console.log(error);
-        }
+    async save(teamName: string, userId: string): Promise<CorneteiroTeam> {
+        const corneteiroTeamData = await this.databaseConnection.team.create({
+            data: {
+                userId,
+                name: teamName,
+            },
+        });
+        const corneteiroTeam = this.corneteiroTeamAdapter.parse(
+            corneteiroTeamData.name,
+            corneteiroTeamData.id,
+            []
+        );
+        return corneteiroTeam;
     }
 
-    async getAll(): Promise<CorneteiroTeam[] | undefined> {
+    async getAll(): Promise<CorneteiroTeam[]> {
         const corneteiroTeams = [];
         const corneteiroTeamsData = await this.databaseConnection.team.findMany(
             {
@@ -79,6 +72,41 @@ export default class CorneteiroTeamRepositoryDatabase
                 ct.teamsOnPlayers
             );
             corneteiroTeams.push(corneteiroTeam);
+        }
+        return corneteiroTeams;
+    }
+
+    async getAllShort(): Promise<CorneteiroTeamShort[]> {
+        const corneteiroTeams = [];
+        const corneteiroTeamsData = await this.databaseConnection.team.findMany(
+            {
+                select: {
+                    id: true,
+                    name: true,
+                    teamsOnPlayers: {
+                        select: {
+                            id: true,
+                            chosenPlayer: {
+                                select: {
+                                    id: true,
+                                    score: true,
+                                    player: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            }
+        );
+        for (const ct of corneteiroTeamsData) {
+            const corneteiroTeam = this.corneteiroTeamAdapter.parse(
+                ct.name,
+                ct.id,
+                ct.teamsOnPlayers
+            );
+            const corneteiroTeamShort =
+                this.corneteiroTeamAdapter.parseShort(corneteiroTeam);
+            corneteiroTeams.push(corneteiroTeamShort);
         }
         return corneteiroTeams;
     }

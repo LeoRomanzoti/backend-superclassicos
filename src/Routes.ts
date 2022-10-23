@@ -1,10 +1,14 @@
 import { PrismaClient } from "@prisma/client";
+import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 
+import AuthController from "./controller/AuthController";
 import ChosenPlayerController from "./controller/ChosenPlayerController";
 import ChosenPlayersOnPointsController from "./controller/ChosenPlayersOnPointsController";
 import CorneteiroTeamController from "./controller/CorneteiroTeamController";
 import PointController from "./controller/PointController";
 import UserController from "./controller/UserController";
+import { verifyToken } from "./middleware/auth";
 
 export default class Routes {
     databaseConnection: PrismaClient;
@@ -19,7 +23,7 @@ export default class Routes {
             res.json({ message: "I'm alive" });
         });
 
-        this.http.post("/users", async (req: any, res: any) => {
+        this.http.post("/users", verifyToken, async (req: any, res: any) => {
             const userController = new UserController(this.databaseConnection);
             const newUser = await userController.createUser(
                 req?.body?.name,
@@ -30,48 +34,68 @@ export default class Routes {
             res.json(newUser);
         });
 
-        this.http.get("/users", async (req: any, res: any) => {
+        this.http.get("/users", verifyToken, async (req: any, res: any) => {
             const userController = new UserController(this.databaseConnection);
             const users = await userController.getUsers();
             res.json(users);
         });
 
-        this.http.get("/users/:userId", async (req: any, res: any) => {
-            const userController = new UserController(this.databaseConnection);
-            const users = await userController.getUserById(req?.params?.userId);
-            if (!users) return res.status(404).json({ message: "Not found" });
-            res.json(users);
-        });
-
-        this.http.get("/users/:userId/teams", async (req: any, res: any) => {
-            const corneteiroTeamController = new CorneteiroTeamController(
-                this.databaseConnection
-            );
-            const corneteiroTeam =
-                await corneteiroTeamController.getCorneteiroTeam(
+        this.http.get(
+            "/users/:userId",
+            verifyToken,
+            async (req: any, res: any) => {
+                const userController = new UserController(
+                    this.databaseConnection
+                );
+                const users = await userController.getUserById(
                     req?.params?.userId
                 );
-            if (!corneteiroTeam)
-                return res.status(404).json({ message: "Not found" });
-            res.json(corneteiroTeam);
-        });
+                if (!users)
+                    return res.status(404).json({ message: "Not found" });
+                res.json(users);
+            }
+        );
 
-        this.http.post("/users/:userId/teams", async (req: any, res: any) => {
-            const corneteiroTeamController = new CorneteiroTeamController(
-                this.databaseConnection
-            );
-            const corneteiroTeam =
-                await corneteiroTeamController.createCorneteiroTeam(
-                    req?.body?.team_name,
-                    req?.params?.userId
+        this.http.get(
+            "/users/:userId/teams",
+            verifyToken,
+            async (req: any, res: any) => {
+                const corneteiroTeamController = new CorneteiroTeamController(
+                    this.databaseConnection
                 );
-            if (!corneteiroTeam)
-                return res.status(404).json({ message: "Team already exist" });
-            res.json(corneteiroTeam);
-        });
+                const corneteiroTeam =
+                    await corneteiroTeamController.getCorneteiroTeam(
+                        req?.params?.userId
+                    );
+                if (!corneteiroTeam)
+                    return res.status(404).json({ message: "Not found" });
+                res.json(corneteiroTeam);
+            }
+        );
+
+        this.http.post(
+            "/users/:userId/teams",
+            verifyToken,
+            async (req: any, res: any) => {
+                const corneteiroTeamController = new CorneteiroTeamController(
+                    this.databaseConnection
+                );
+                const corneteiroTeam =
+                    await corneteiroTeamController.createCorneteiroTeam(
+                        req?.body?.team_name,
+                        req?.params?.userId
+                    );
+                if (!corneteiroTeam)
+                    return res
+                        .status(404)
+                        .json({ message: "Team already exist" });
+                res.json(corneteiroTeam);
+            }
+        );
 
         this.http.delete(
             "/users/:userId/teams/:teamId/players/:teamsOnPlayersId",
+            verifyToken,
             async (req: any, res: any) => {
                 const corneteiroTeamController = new CorneteiroTeamController(
                     this.databaseConnection
@@ -90,6 +114,7 @@ export default class Routes {
 
         this.http.post(
             "/users/:userId/teams/:teamId/players",
+            verifyToken,
             async (req: any, res: any) => {
                 const corneteiroTeamController = new CorneteiroTeamController(
                     this.databaseConnection
@@ -114,11 +139,19 @@ export default class Routes {
             }
         );
 
-        this.http.get("/teams", async (req: any, res: any) => {
+        this.http.get("/teams", verifyToken, async (req: any, res: any) => {
             const corneteiroTeamController = new CorneteiroTeamController(
                 this.databaseConnection
             );
             const corneteiroTeams = await corneteiroTeamController.getAll();
+            res.json(corneteiroTeams);
+        });
+
+        this.http.get("/ranking", verifyToken, async (req: any, res: any) => {
+            const corneteiroTeamController = new CorneteiroTeamController(
+                this.databaseConnection
+            );
+            const corneteiroTeams = await corneteiroTeamController.getRanking();
             res.json(corneteiroTeams);
         });
 
@@ -130,13 +163,17 @@ export default class Routes {
             res.json(points);
         });
 
-        this.http.get("/chosen-players", async (req: any, res: any) => {
-            const chosenPlayerController = new ChosenPlayerController(
-                this.databaseConnection
-            );
-            const points = await chosenPlayerController.getChosenPlayers();
-            res.json(points);
-        });
+        this.http.get(
+            "/chosen-players",
+            verifyToken,
+            async (req: any, res: any) => {
+                const chosenPlayerController = new ChosenPlayerController(
+                    this.databaseConnection
+                );
+                const points = await chosenPlayerController.getChosenPlayers();
+                res.json(points);
+            }
+        );
 
         this.http.post(
             "/chosen-players/:chosenPlayerId/points",
@@ -162,6 +199,7 @@ export default class Routes {
 
         this.http.get(
             "/chosen-players/:chosenPlayerId/points",
+            verifyToken,
             async (req: any, res: any) => {
                 const chosenPlayersOnPointsController =
                     new ChosenPlayersOnPointsController(
@@ -175,5 +213,44 @@ export default class Routes {
                 res.json(chosenPlayerPoints);
             }
         );
+
+        this.http.post("/login", async (req: Request, res: Response) => {
+            try {
+                const authController = new AuthController(
+                    this.databaseConnection
+                );
+                const user = await authController.login(req?.body?.user_phone);
+                res.json(user);
+            } catch (error: any) {
+                res.status(401).json({
+                    message: "Não foi possível fazer o login.",
+                });
+            }
+        });
+
+        this.http.post("/validation", async (req: Request, res: Response) => {
+            try {
+                const authController = new AuthController(
+                    this.databaseConnection
+                );
+                const isValidOrError = await authController.validate(
+                    req?.body?.user_id,
+                    req?.body?.code
+                );
+                if (isValidOrError.isFailure)
+                    return res
+                        .status(401)
+                        .json({ message: "Não foi possível fazer o login." });
+                const user = isValidOrError.getValue();
+
+                const token = jwt.sign({ user }, "supersecrety", {
+                    expiresIn: 604800, // expires in 7 days
+                });
+
+                return res.json({ user, token });
+            } catch (error: any) {
+                res.status(error?.response?.status).json(error?.response?.data);
+            }
+        });
     }
 }
