@@ -4,6 +4,7 @@ import CorneteiroTeamChosenPlayerDTO, {
     CorneteiroTeamChosenPlayerData,
 } from "../../dto/in/CorneteiroTeamChosenPlayerDTO";
 import PlayerDTO from "../../dto/in/PlayerDTO";
+import CorneteiroTeamShort from "../../dto/out/CorneteiroTeamShort";
 
 export default class CorneteiroTeamRepositoryMemory
     implements CorneteiroTeamRepository
@@ -44,20 +45,21 @@ export default class CorneteiroTeamRepositoryMemory
         ];
     }
 
+    getAllShort(): Promise<CorneteiroTeamShort[]> {
+        throw new Error("Method not implemented.");
+    }
+
     async removePlayer(teamsOnPlayersId: string): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
 
-    async save(
-        teamName: string,
-        userId: string
-    ): Promise<CorneteiroTeam | undefined> {
+    async save(teamName: string, userId: string): Promise<CorneteiroTeam> {
         const newCorneteiroTeam = new CorneteiroTeam(teamName, "06", []);
         this.corneteirosTeam.push(newCorneteiroTeam);
         return newCorneteiroTeam;
     }
 
-    getAll(): Promise<CorneteiroTeam[] | undefined> {
+    getAll(): Promise<CorneteiroTeam[]> {
         throw new Error("Method not implemented.");
     }
 
