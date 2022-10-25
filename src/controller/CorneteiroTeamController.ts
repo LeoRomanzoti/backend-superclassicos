@@ -18,7 +18,7 @@ import RoundRepositoryDatabase from "../infra/database/RoundRepositoryDatabase";
 import TeamsOnPlayersRepositoryDatabase from "../infra/database/TeamsOnPlayersRepositoryDatabase";
 
 export default class CorneteiroTeamController {
-    constructor(readonly databaseConnection: PrismaClient) { }
+    constructor(readonly databaseConnection: PrismaClient) {}
 
     async getCorneteiroTeam(
         userId: string
