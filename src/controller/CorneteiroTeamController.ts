@@ -18,7 +18,7 @@ import RoundRepositoryDatabase from "../infra/database/RoundRepositoryDatabase";
 import TeamsOnPlayersRepositoryDatabase from "../infra/database/TeamsOnPlayersRepositoryDatabase";
 
 export default class CorneteiroTeamController {
-    constructor(readonly databaseConnection: PrismaClient) {}
+    constructor(readonly databaseConnection: PrismaClient) { }
 
     async getCorneteiroTeam(
         userId: string
@@ -45,7 +45,7 @@ export default class CorneteiroTeamController {
     async createCorneteiroTeam(
         teamName: string,
         userId: string
-    ): Promise<CorneteiroTeam | undefined> {
+    ): Promise<Result<CorneteiroTeam>> {
         const corneteiroTeamAdapter = new CorneteiroTeamAdapter();
         const corneteiroTeamRepository = new CorneteiroTeamRepositoryDatabase(
             this.databaseConnection,
@@ -54,12 +54,12 @@ export default class CorneteiroTeamController {
         const createCorneteiroTeamUseCase = new CreateCorneteiroTeam(
             corneteiroTeamRepository
         );
-        const newCorneteiroTeam = createCorneteiroTeamUseCase.execute(
+        const newCorneteiroTeamOrError = createCorneteiroTeamUseCase.execute(
             teamName,
             userId
         );
 
-        return newCorneteiroTeam;
+        return newCorneteiroTeamOrError;
     }
 
     async removePlayer(teamsOnPlayersId: string): Promise<Result<boolean>> {

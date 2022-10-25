@@ -80,16 +80,16 @@ export default class Routes {
                 const corneteiroTeamController = new CorneteiroTeamController(
                     this.databaseConnection
                 );
-                const corneteiroTeam =
+                const corneteiroTeamOrError =
                     await corneteiroTeamController.createCorneteiroTeam(
                         req?.body?.team_name,
                         req?.params?.userId
                     );
-                if (!corneteiroTeam)
+                if (corneteiroTeamOrError.isFailure)
                     return res
                         .status(404)
-                        .json({ message: "Team already exist" });
-                res.json(corneteiroTeam);
+                        .json({ message: corneteiroTeamOrError.error });
+                res.json(corneteiroTeamOrError.getValue());
             }
         );
 
