@@ -7,6 +7,7 @@
         "test": "test"
     },
     "scripts": {
+        "start:watch": "tsc && nodemon -r ./dist/src/main.js",
         "dev": "tsc && nodemon dist/src/main",
         "test": "tsc && jest ./dist",
         "coverage": "jest --coverage",
@@ -14,6 +15,7 @@
         "lint-fix": "eslint src --fix",
         "prepare": "husky install",
         "main": "tsc && node ./dist/src/main",
+        "migrate:deploy": "prisma migrate deploy",
         "migrate": "npx prisma migrate dev --name init",
         "prisma": "npx prisma studio",
         "build": "tsc"

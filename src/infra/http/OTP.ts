@@ -7,7 +7,7 @@ export default class OTP implements SMS {
     timeout: object;
     constructor(readonly connectionService: Axios) {
         this.url = process.env.OTP_URL || "";
-        this.timeout = { timeout: 5000 };
+        this.timeout = { timeout: 15000 };
     }
 
     async send(userId: string, userPhone: string): Promise<any> {
