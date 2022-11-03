@@ -6,9 +6,11 @@ export default class CorneteiroTeamRanking {
 
     async execute(): Promise<CorneteiroTeamShort[]> {
         let corneteiroTeams = await this.corneteiroTeamRepository.getAllShort();
-        corneteiroTeams = corneteiroTeams?.sort(function (team) {
-            return team.score;
-        });
+
+        corneteiroTeams = corneteiroTeams?.sort(
+            (a: CorneteiroTeamShort, b: CorneteiroTeamShort) =>
+                b.score - a.score
+        );
         return corneteiroTeams;
     }
 }

@@ -1,27 +1,62 @@
 version: "3"
 
+# networks:
+#   proxy:
+#     driver: bridge
+
 services:
-    postgres:
-        image: postgres
-        environment:
-            POSTGRES_PASSWORD: "admin"
-        ports:
-            - "5432:5432"
-        networks:
-            - postgres-network
+  # nginx:
+  #   image: nginx
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+  #   networks:
+  #     - proxy
 
-    pgadmin:
-        image: dpage/pgadmin4
-        environment:
-            PGADMIN_DEFAULT_EMAIL: "admin@gmail.com"
-            PGADMIN_DEFAULT_PASSWORD: "admin"
-        ports:
-            - "5433:80"
-        depends_on:
-            - postgres
-        networks:
-            - postgres-network
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "admin"
+      POSTGRES_USER: "admin"
+      POSTGRES_DB: "superclassicos"
+    ports:
+      - "5432:5432"
+  # networks:
+  #   - proxy
 
-networks:
-    postgres-network:
-        driver: bridge
+  # pgadmin:
+  #   container_name: pgadmin
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: pedro.impulcetto@gmail.com
+  #     PGADMIN_DEFAULT_PASSWORD: admin
+  #     PGADMIN_CONFIG_SERVER_MODE: 'False'
+  #   # ports:
+  #   #   - "5050:80"
+  #   networks:
+  #     - proxy
+  #   depends_on:
+  #     - postgres
+  #   restart: unless-stopped
+
+  superclassicos:
+    container_name: superclassicos
+    build:
+      context: .
+    restart: always
+    # image: docker.io/pedroimpulcetto/superclassicos:ec2v3
+    command: >
+      bash -c "npm run migrate:deploy && npm run start:watch"
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://admin:admin@postgres:5432/superclassicos
+      OTP_URL: http://ec2-54-175-37-44.compute-1.amazonaws.com
+      SECRET_KEY: supersecret
+    volumes:
+      - ./:/srv/app/
+      # networks:
+      #   - proxy
+      # depends_on:
+      #   - postgres

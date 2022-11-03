@@ -77,19 +77,25 @@ export default class Routes {
             "/users/:userId/teams",
             verifyToken,
             async (req: any, res: any) => {
-                const corneteiroTeamController = new CorneteiroTeamController(
-                    this.databaseConnection
-                );
-                const corneteiroTeamOrError =
-                    await corneteiroTeamController.createCorneteiroTeam(
-                        req?.body?.team_name,
-                        req?.params?.userId
-                    );
-                if (corneteiroTeamOrError.isFailure)
-                    return res
-                        .status(404)
-                        .json({ message: corneteiroTeamOrError.error });
-                res.json(corneteiroTeamOrError.getValue());
+                try {
+                    const corneteiroTeamController =
+                        new CorneteiroTeamController(this.databaseConnection);
+                    const corneteiroTeamOrError =
+                        await corneteiroTeamController.createCorneteiroTeam(
+                            req?.body?.team_name,
+                            req?.params?.userId
+                        );
+                    if (corneteiroTeamOrError.isFailure)
+                        return res
+                            .status(404)
+                            .json({ message: corneteiroTeamOrError.error });
+                    res.json(corneteiroTeamOrError.getValue());
+                } catch (error) {
+                    console.log(error);
+                    return res.status(404).json({
+                        message: "Error inesperado ao criar um time.",
+                    });
+                }
             }
         );
 
@@ -97,18 +103,24 @@ export default class Routes {
             "/users/:userId/teams/:teamId/players/:teamsOnPlayersId",
             verifyToken,
             async (req: any, res: any) => {
-                const corneteiroTeamController = new CorneteiroTeamController(
-                    this.databaseConnection
-                );
-                const itWasRemovedOrError =
-                    await corneteiroTeamController.removePlayer(
-                        req?.params?.teamsOnPlayersId
-                    );
-                if (itWasRemovedOrError.isFailure)
-                    return res
-                        .status(403)
-                        .json({ message: itWasRemovedOrError.error });
-                res.json({});
+                try {
+                    const corneteiroTeamController =
+                        new CorneteiroTeamController(this.databaseConnection);
+                    const itWasRemovedOrError =
+                        await corneteiroTeamController.removePlayer(
+                            req?.params?.teamsOnPlayersId
+                        );
+                    if (itWasRemovedOrError.isFailure)
+                        return res
+                            .status(403)
+                            .json({ message: itWasRemovedOrError.error });
+                    res.json({});
+                } catch (error) {
+                    console.log(error);
+                    return res.status(403).json({
+                        message: "Erro inesperado ao remover um jogador.",
+                    });
+                }
             }
         );
 
@@ -134,6 +146,7 @@ export default class Routes {
                             .json({ message: addPlayerOrError.error });
                     res.json({});
                 } catch (error) {
+                    console.log(error);
                     return res.status(401).json({ message: error });
                 }
             }
@@ -178,22 +191,30 @@ export default class Routes {
         this.http.post(
             "/chosen-players/:chosenPlayerId/points",
             async (req: any, res: any) => {
-                const chosenPlayersOnPointsController =
-                    new ChosenPlayersOnPointsController(
-                        this.databaseConnection
-                    );
-                const chosenPlayerWithUpdatedIdOrError =
-                    await chosenPlayersOnPointsController.addPoint(
-                        req?.body?.point_id,
-                        req?.params?.chosenPlayerId
-                    );
+                try {
+                    const chosenPlayersOnPointsController =
+                        new ChosenPlayersOnPointsController(
+                            this.databaseConnection
+                        );
+                    const chosenPlayerWithUpdatedPointOrError =
+                        await chosenPlayersOnPointsController.addPoint(
+                            req?.body?.point_id,
+                            req?.params?.chosenPlayerId
+                        );
 
-                if (chosenPlayerWithUpdatedIdOrError.isFailure)
-                    return res.status(400).json({
-                        message: chosenPlayerWithUpdatedIdOrError.error,
+                    if (chosenPlayerWithUpdatedPointOrError.isFailure)
+                        return res.status(400).json({
+                            message: chosenPlayerWithUpdatedPointOrError.error,
+                        });
+
+                    res.json(chosenPlayerWithUpdatedPointOrError.getValue());
+                } catch (error) {
+                    console.log(error);
+                    return res.status(500).json({
+                        message:
+                            "Erro inesperado ao adicionar um ponto ao jogador.",
                     });
-
-                res.json(chosenPlayerWithUpdatedIdOrError.getValue());
+                }
             }
         );
 
@@ -219,7 +240,10 @@ export default class Routes {
                 const authController = new AuthController(
                     this.databaseConnection
                 );
-                const user = await authController.login(req?.body?.user_phone);
+                const user = await authController.login(
+                    req?.body?.user_phone,
+                    req?.body?.user_name
+                );
                 res.json(user);
             } catch (error: any) {
                 res.status(401).json({

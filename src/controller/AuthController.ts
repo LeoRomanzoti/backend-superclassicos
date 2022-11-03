@@ -13,7 +13,7 @@ import OTP from "../infra/http/OTP";
 export default class AuthController {
     constructor(readonly databaseConnection: PrismaClient) {}
 
-    async login(userPhone: string): Promise<User> {
+    async login(userPhone: string, userName: string): Promise<User> {
         const userAdapter = new UserAdapter();
         const userRepository = new UserRepositoryDatabase(
             this.databaseConnection,
@@ -22,7 +22,7 @@ export default class AuthController {
         let user = await userRepository.getByPhone(userPhone);
         if (!user) {
             const userCaseUser = new CreateUser(userRepository);
-            user = await userCaseUser.execute("", userPhone);
+            user = await userCaseUser.execute(userName, userPhone);
         }
         const smsClient = new OTP(axios);
         const useCase = new SendSMS(smsClient);
@@ -34,8 +34,7 @@ export default class AuthController {
         const smsClient = new OTP(axios);
         const useCase = new ValidateCode(smsClient);
         const isValid = await useCase.execute(userId, code);
-        if (!isValid.getValue())
-            return Result.fail("Erro ao validar o código.");
+        if (isValid.isFailure) return Result.fail("Erro ao validar o código.");
         const userAdapter = new UserAdapter();
         const userRepository = new UserRepositoryDatabase(
             this.databaseConnection,

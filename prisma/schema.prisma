@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -12,7 +12,7 @@ model User {
   phone  String  @unique
   name   String?
   team   Team?
-  scopes String  @default("[admin,]")
+  scopes String  @default("user;")
 }
 
 model Player {
@@ -35,7 +35,7 @@ model ChosenPlayer {
   id                    String                  @id @default(uuid())
   playerId              String
   roundId               String
-  score                 Int
+  score                 Float
   round                 Round                   @relation(fields: [roundId], references: [id])
   player                Player                  @relation(fields: [playerId], references: [id])
   teamsOnPlayers        TeamsOnPlayers[]
