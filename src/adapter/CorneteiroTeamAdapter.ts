@@ -3,7 +3,7 @@ import CorneteiroTeamChosenPlayerDTO from "../dto/in/CorneteiroTeamChosenPlayerD
 import CorneteiroTeamShort from "../dto/out/CorneteiroTeamShort";
 
 export default class CorneteiroTeamAdapter {
-    constructor() { }
+    constructor() {}
 
     parse(
         name: string,
@@ -18,7 +18,10 @@ export default class CorneteiroTeamAdapter {
         return corneteiroTeam;
     }
 
-    parseShort(corneteiroTeamComplete: CorneteiroTeam, userName: string | null): CorneteiroTeamShort {
+    parseShort(
+        corneteiroTeamComplete: CorneteiroTeam,
+        userName: string | null
+    ): CorneteiroTeamShort {
         return new CorneteiroTeamShort(
             corneteiroTeamComplete.corneteiroTeamId,
             corneteiroTeamComplete.name,

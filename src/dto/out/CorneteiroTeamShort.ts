@@ -4,5 +4,5 @@ export default class CorneteiroTeamShort {
         readonly name: string,
         readonly score: number,
         readonly userName: string | null
-    ) { }
+    ) {}
 }

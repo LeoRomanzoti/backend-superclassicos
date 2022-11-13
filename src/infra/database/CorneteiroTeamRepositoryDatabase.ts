@@ -6,11 +6,12 @@ import CorneteiroTeamRepository from "../../domain/repository/CorneteiroTeamRepo
 import CorneteiroTeamShort from "../../dto/out/CorneteiroTeamShort";
 
 export default class CorneteiroTeamRepositoryDatabase
-    implements CorneteiroTeamRepository {
+    implements CorneteiroTeamRepository
+{
     constructor(
         readonly databaseConnection: PrismaClient,
         readonly corneteiroTeamAdapter: CorneteiroTeamAdapter
-    ) { }
+    ) {}
 
     async removePlayer(teamsOnPlayersId: string): Promise<boolean> {
         try {
@@ -84,8 +85,8 @@ export default class CorneteiroTeamRepositoryDatabase
                     name: true,
                     user: {
                         select: {
-                            name: true
-                        }
+                            name: true,
+                        },
                     },
                     teamsOnPlayers: {
                         select: {
@@ -106,10 +107,12 @@ export default class CorneteiroTeamRepositoryDatabase
             const corneteiroTeam = this.corneteiroTeamAdapter.parse(
                 ct.name,
                 ct.id,
-                ct.teamsOnPlayers,
+                ct.teamsOnPlayers
             );
-            const corneteiroTeamShort =
-                this.corneteiroTeamAdapter.parseShort(corneteiroTeam, ct?.user?.name);
+            const corneteiroTeamShort = this.corneteiroTeamAdapter.parseShort(
+                corneteiroTeam,
+                ct?.user?.name
+            );
             corneteiroTeams.push(corneteiroTeamShort);
         }
         return corneteiroTeams;
