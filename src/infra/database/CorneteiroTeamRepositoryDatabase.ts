@@ -83,6 +83,11 @@ export default class CorneteiroTeamRepositoryDatabase
                 select: {
                     id: true,
                     name: true,
+                    user: {
+                        select: {
+                            name: true,
+                        },
+                    },
                     teamsOnPlayers: {
                         select: {
                             id: true,
@@ -104,8 +109,10 @@ export default class CorneteiroTeamRepositoryDatabase
                 ct.id,
                 ct.teamsOnPlayers
             );
-            const corneteiroTeamShort =
-                this.corneteiroTeamAdapter.parseShort(corneteiroTeam);
+            const corneteiroTeamShort = this.corneteiroTeamAdapter.parseShort(
+                corneteiroTeam,
+                ct?.user?.name
+            );
             corneteiroTeams.push(corneteiroTeamShort);
         }
         return corneteiroTeams;

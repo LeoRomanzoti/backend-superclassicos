@@ -18,11 +18,15 @@ export default class CorneteiroTeamAdapter {
         return corneteiroTeam;
     }
 
-    parseShort(corneteiroTeamComplete: CorneteiroTeam): CorneteiroTeamShort {
+    parseShort(
+        corneteiroTeamComplete: CorneteiroTeam,
+        userName: string | null
+    ): CorneteiroTeamShort {
         return new CorneteiroTeamShort(
             corneteiroTeamComplete.corneteiroTeamId,
             corneteiroTeamComplete.name,
-            corneteiroTeamComplete.score
+            corneteiroTeamComplete.score,
+            userName
         );
     }
 }
